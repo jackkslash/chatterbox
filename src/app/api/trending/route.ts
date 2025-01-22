@@ -12,7 +12,7 @@ async function getTrending() {
 
     const feed = await response.text();
     // const items = feed.match(/<title>(?!Daily Search Trends)(.*?)<\/title>/g);
-    const items = feed.match(/<title>(?!Daily Search Trends)(.*?)<\/title>/g)?.slice(0, 3);
+    const items = feed.match(/<title>(?!Daily Search Trends)(.*?)<\/title>/g)?.slice(0, 2);
 
     const categories = ['trending', 'community', 'science', 'tech', 'travel', 'politics', 'health', 'sports', 'finance', 'football'] as const;
 
@@ -22,7 +22,7 @@ async function getTrending() {
 
     const itemObject = await Promise.all(items!.map(async (item) => {
         const { object } = await generateObject({
-            model: google('gemini-1.5-pro'),
+            model: google('gemini-1.5-flash'),
             prompt: `Give the category for the topic from the existing values only in lowercase only: ${item.replace(/<\/?title>/g, '')}
           
           - if the topic category isn't present in the list, please select 'trending' only!`,
@@ -30,7 +30,7 @@ async function getTrending() {
             temperature: 0,
         });
         return {
-            title: item.replace(/<\/?title>/g, ''),
+            text: item.replace(/<\/?title>/g, ''),
             category: object.category,
         }
     }));

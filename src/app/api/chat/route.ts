@@ -1,3 +1,4 @@
+import { Trending } from '@/app/components/Trending';
 import { google } from '@ai-sdk/google';
 import { streamText, tool } from 'ai';
 import { z } from 'zod';
@@ -9,7 +10,8 @@ export async function POST(req: Request) {
     const { messages } = await req.json();
 
     const result = streamText({
-        model: google('gemini-1.5-pro'),
+        model: google('gemini-1.5-flash'),
+        system: 'You are a digital friend that helps users.',
         messages,
         tools: {
             weather: tool({
@@ -37,7 +39,18 @@ export async function POST(req: Request) {
                         temperature,
                     };
                 },
-            })
+            }),
+            trending: tool({
+                description: 'Given a topic, return the trending topic and any info you have on it',
+                parameters: z.object({
+                    topic: z.string().describe('The topic to search for'),
+                }),
+                async execute({ topic }) {
+                    return {
+                        topic,
+                    };
+                },
+            }),
         },
     });
 
