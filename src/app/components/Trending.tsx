@@ -1,35 +1,22 @@
 'use client';
 
+import { useQuery } from '@tanstack/react-query';
 import React, { useEffect, useState } from 'react';
 
 export const Trending = ({ append }: any) => {
-    const [trending, setTrending] = useState<any[]>([]); // State to store fetched data
-    const [loading, setLoading] = useState(true); // State to track loading status
-    const [error, setError] = useState<string | null>(null); // State to track errors
+    const { data: trending, isLoading, error } = useQuery({
+        queryKey: ['trending-topics'],
+        queryFn: async () => {
+            const response = await fetch('/api/trending');
+            if (!response.ok) throw new Error('Failed to fetch');
+            return response.json();
+        },
+        staleTime: 3600000, // 1 hour
+        gcTime: 3600000
+    });
 
-    useEffect(() => {
-        const fetchTrending = async () => {
-            setLoading(true);
-            setError(null);
-            try {
-                const response = await fetch('/api/trending');
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch: ${response.statusText}`);
-                }
-                const data = await response.json();
-                setTrending(data);
-            } catch (err: any) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchTrending();
-    }, []);
-
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error: {error}</p>;
+    if (isLoading) return <p>Loading...</p>;
+    if (error) return <p>Error: {error instanceof Error ? error.message : 'Unknown error'}</p>;
 
     return (
         <div className='flex flex-row gap-4'>
