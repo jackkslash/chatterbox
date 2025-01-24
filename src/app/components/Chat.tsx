@@ -1,18 +1,18 @@
 'use client';
 
 import { useChat } from 'ai/react';
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { Trending } from './Trending';
 import { suggestQuestions } from '../actions';
 
 export const Chat = () => {
-
+    const lastSubmittedQueryRef = useRef<string>('');
     const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>([]);
     const { messages, input, handleInputChange, handleSubmit, append } = useChat({
         maxSteps: 5,
         onFinish: async (message, { finishReason }) => {
             if (message.content && finishReason === 'stop' || finishReason === 'length') {
-                const newHistory = [...messages, { role: 'assistant', content: message.content }];
+                const newHistory = [...messages, { role: "user", content: lastSubmittedQueryRef.current }, { role: "assistant", content: message.content }];
                 const { questions } = await suggestQuestions(newHistory);
                 setSuggestedQuestions(questions);
                 console.log(suggestedQuestions);
@@ -20,6 +20,7 @@ export const Chat = () => {
         }
 
     });
+
     return (
         <div>
             <div className="flex flex-col w-full max-w-xl py-24 mx-auto stretch gap-4">
@@ -45,6 +46,7 @@ export const Chat = () => {
                                 {suggestedQuestions.map((q, i) => (
                                     <li key={i} onClick={() => {
                                         append({ role: 'user', content: q });
+                                        lastSubmittedQueryRef.current = q;
                                         setSuggestedQuestions([]);
                                     }}>
                                         {q}
