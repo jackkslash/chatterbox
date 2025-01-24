@@ -19,18 +19,16 @@ export const Trending = ({ append }: any) => {
     if (error) return <p>Error: {error instanceof Error ? error.message : 'Unknown error'}</p>;
 
     return (
-        <div className='flex flex-row gap-4'>
+        <div className='flex flex-row gap-4 max-w-3xl overflow-auto'>
             {trending.map((t: any) => (
                 <div
                     key={t.text}
                     onClick={() => append({ role: 'user', content: t.text })}
-                    className="flex flex-col rounded-lg border border-gray-600 shadow-md"
+                    className="flex flex-col rounded-lg border border-gray-700 shadow-md p-2 bg-zinc-900"
                 >
-                    <div className="flex items-center gap-2 p-4 w-full">
-                        <div>
-                            <h3 className="text-lg font-medium">{t.text}</h3>
-                            <p className="text-sm text-gray-500">{t.category}</p>
-                        </div>
+                    <div>
+                        <h3 className="text-sm font-medium truncate">{t.text}</h3>
+                        <p className="text-sm text-gray-500 truncate">{t.category}</p>
                     </div>
                 </div>
             ))}
