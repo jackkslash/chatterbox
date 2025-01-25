@@ -4,6 +4,7 @@ import { useChat } from 'ai/react';
 import React, { useRef, useState } from 'react'
 import { Trending } from './Trending';
 import { suggestQuestions } from '../actions';
+import ReactMarkdown from 'react-markdown';
 
 export const Chat = () => {
     const lastSubmittedQueryRef = useRef<string>('');
@@ -35,7 +36,7 @@ export const Chat = () => {
                             {m.toolInvocations ? (
                                 <pre>{JSON.stringify(m.toolInvocations, null, 2)}</pre>
                             ) : (
-                                <p>{m.content}</p>
+                                <ReactMarkdown>{m.content}</ReactMarkdown>
                             )}
                         </div>
                     ))}

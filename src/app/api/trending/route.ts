@@ -3,7 +3,13 @@ import { generateObject } from "ai";
 import { NextResponse } from "next/server";
 import { z } from "zod";
 
-async function getTrending() {
+export interface TrendingQuery {
+    icon: string;
+    text: string;
+    category: string;
+}
+
+async function getTrending(): Promise<TrendingQuery[]> {
     const response = await fetch('https://trends.google.com/trends/trendingsearches/daily/rss');
 
     if (!response.ok) {
@@ -30,6 +36,7 @@ async function getTrending() {
             temperature: 0,
         });
         return {
+            icon: object.category,
             text: item.replace(/<\/?title>/g, ''),
             category: object.category,
         }

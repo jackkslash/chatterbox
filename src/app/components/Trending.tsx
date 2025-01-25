@@ -1,9 +1,9 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
-export const Trending = ({ append }: any) => {
+export const Trending = ({ append }: { append: (message: any) => void }) => {
     const { data: trending, isLoading, error } = useQuery({
         queryKey: ['trending-topics'],
         queryFn: async () => {
