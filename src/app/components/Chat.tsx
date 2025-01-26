@@ -1,10 +1,11 @@
 'use client';
 
 import { useChat } from 'ai/react';
-import React, { useRef, useState } from 'react'
+import React, { useCallback, useMemo, useRef, useState } from 'react'
 import { Trending } from './Trending';
 import { suggestQuestions } from '../actions';
 import ReactMarkdown from 'react-markdown';
+import { ToolInvocations } from './ToolInvocations';
 
 export const Chat = () => {
     const lastSubmittedQueryRef = useRef<string>('');
@@ -22,6 +23,9 @@ export const Chat = () => {
 
     });
 
+    const memoMessages = useMemo(() => messages, [messages]);
+    const memoAppend = useCallback(append, [append]);
+
     return (
         <div>
             <div className="flex flex-col w-full max-w-xl py-24 mx-auto stretch gap-4">
@@ -30,11 +34,13 @@ export const Chat = () => {
                         el.scrollTop = el.scrollHeight;
                     }
                 }}>
-                    {messages.map(m => (
+                    {memoMessages.map(m => (
                         <div key={m.id} className="whitespace-pre-wrap">
                             {m.role === 'user' ? 'User: ' : 'AI: '}
                             {m.toolInvocations ? (
-                                <pre>{JSON.stringify(m.toolInvocations, null, 2)}</pre>
+                                <div>
+                                    <ToolInvocations toolInvocations={m.toolInvocations} />
+                                </div>
                             ) : (
                                 <ReactMarkdown>{m.content}</ReactMarkdown>
                             )}
@@ -69,7 +75,7 @@ export const Chat = () => {
                     />
                 </form>
             </div>
-            <Trending append={append} />
+            <Trending append={memoAppend} />
         </div>
     )
 }
