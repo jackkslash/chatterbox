@@ -37,11 +37,12 @@ export const Chat = () => {
                     {memoMessages.map(m => (
                         <div key={m.id} className="whitespace-pre-wrap">
                             {m.role === 'user' ? 'User: ' : 'AI: '}
-                            {m.toolInvocations ? (
-                                <div>
+                            {m.toolInvocations && (
+                                <div className="flex flex-col gap-2">
                                     <ToolInvocations toolInvocations={m.toolInvocations} />
                                 </div>
-                            ) : (
+                            )}
+                            {m.content && (
                                 <ReactMarkdown>{m.content}</ReactMarkdown>
                             )}
                         </div>

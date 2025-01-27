@@ -1,19 +1,22 @@
 import { ToolInvocation } from 'ai'
-import React from 'react'
+import React, { useCallback } from 'react'
+import { WebSearch } from './WebSearch';
 
 export const ToolInvocations = ({ toolInvocations }: { toolInvocations: ToolInvocation[] }) => {
-    {/* <pre>{JSON.stringify(toolInvocations, null, 2)}</pre> */ }
+    // { JSON.stringify(toolInvocations, null, 2) }
 
-    if (!toolInvocations) return null;
-    if (toolInvocations[0].toolName === "web_search") {
-        return (
-            <div className="flex flex-col gap-2">
-                {toolInvocations[0].args.queries?.map((q: any, i: any) => (
-                    <div key={i} className="flex flex-row gap-2">
-                        <q>{q}</q>
-                    </div>
-                ))}
+    const render = useCallback((toolInvocation: ToolInvocation, index: number) => {
+        if (toolInvocation.toolName === 'web_search') {
+            return <WebSearch key={index} queries={toolInvocation.args.queries} result={'result' in toolInvocation ? toolInvocation.result : undefined} />;
+        } else {
+            return <div key={index}>{JSON.stringify(toolInvocation, null, 2)}</div>
+        }
+    }, [])
+    return toolInvocations.map(
+        (toolInvocation: ToolInvocation, toolIndex: number) => (
+            <div key={`tool-${toolIndex}`}>
+                {render(toolInvocation, toolIndex)}
             </div>
         )
-    }
+    );
 }
