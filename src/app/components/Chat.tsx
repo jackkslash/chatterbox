@@ -1,7 +1,7 @@
 'use client';
 
 import { useChat } from 'ai/react';
-import React, { useCallback, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Trending } from './Trending';
 import { suggestQuestions } from '../actions';
 import ReactMarkdown from 'react-markdown';
@@ -9,6 +9,7 @@ import { ToolInvocations } from './ToolInvocations';
 
 export const Chat = () => {
     const lastSubmittedQueryRef = useRef<string>('');
+    const [submitted, setSubmitted] = useState(false);
     const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>([]);
     const { messages, input, handleInputChange, handleSubmit, append } = useChat({
         maxSteps: 5,
@@ -23,12 +24,23 @@ export const Chat = () => {
 
     });
 
+
+    useEffect(() => {
+        if (messages.length) {
+            setSubmitted(true);
+        }
+    }, [messages.length]);
     const memoMessages = useMemo(() => messages, [messages]);
     const memoAppend = useCallback(append, [append]);
 
     return (
         <div>
             <div className="flex flex-col w-full max-w-xl py-24 mx-auto stretch gap-4">
+                {(!submitted &&
+                    <div>
+                        <h1>Ask summet?</h1>
+                    </div>
+                )}
                 <div className="flex flex-col gap-4 h-96 overflow-y-auto" ref={(el) => {
                     if (el) {
                         el.scrollTop = el.scrollHeight;
@@ -56,6 +68,7 @@ export const Chat = () => {
                                         append({ role: 'user', content: q });
                                         lastSubmittedQueryRef.current = q;
                                         setSuggestedQuestions([]);
+                                        setSubmitted(true);
                                     }}>
                                         {q}
                                     </li>
@@ -76,7 +89,7 @@ export const Chat = () => {
                     />
                 </form>
             </div>
-            <Trending append={memoAppend} />
+            <Trending append={memoAppend} setSubmitted={setSubmitted} />
         </div>
     )
 }
