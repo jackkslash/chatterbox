@@ -4,8 +4,8 @@ import { useChat } from 'ai/react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Trending } from './Trending';
 import { suggestQuestions } from '../actions';
-import ReactMarkdown from 'react-markdown';
 import { ToolInvocations } from './ToolInvocations';
+import { MarkdownRender } from './MarkdownRender';
 
 export const Chat = () => {
     const lastSubmittedQueryRef = useRef<string>('');
@@ -36,48 +36,48 @@ export const Chat = () => {
     return (
         <div>
             <div className="flex flex-col w-full max-w-xl py-24 mx-auto stretch gap-4">
-                {(!submitted &&
-                    <div>
+                {submitted ? (
+                    <div className="flex flex-col gap-4 h-96 overflow-y-auto" ref={(el) => {
+                        if (el) {
+                            el.scrollTop = el.scrollHeight;
+                        }
+                    }}>
+                        {memoMessages.map(m => (
+                            <div key={m.id} className="whitespace-pre-wrap">
+                                {m.role === 'user' ? 'User: ' : 'AI: '}
+                                {m.toolInvocations && (
+                                    <div className="flex flex-col gap-2">
+                                        <ToolInvocations toolInvocations={m.toolInvocations} />
+                                    </div>
+                                )}
+                                {m.content && (
+                                    <MarkdownRender content={m.content} />
+                                )}
+                            </div>
+                        ))}
+                        {suggestedQuestions.length > 0 && (
+                            <div className="flex flex-col gap-4">
+                                <h2 className="text-lg font-bold">Suggested Questions</h2>
+                                <ul className="list-disc list-inside">
+                                    {suggestedQuestions.map((q, i) => (
+                                        <li key={i} onClick={() => {
+                                            append({ role: 'user', content: q });
+                                            lastSubmittedQueryRef.current = q;
+                                            setSuggestedQuestions([]);
+                                            setSubmitted(true);
+                                        }}>
+                                            {q}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
+                    </div>
+                ) : (
+                    <div className='flex justify-center'>
                         <h1>Ask summet?</h1>
                     </div>
                 )}
-                <div className="flex flex-col gap-4 h-96 overflow-y-auto" ref={(el) => {
-                    if (el) {
-                        el.scrollTop = el.scrollHeight;
-                    }
-                }}>
-                    {memoMessages.map(m => (
-                        <div key={m.id} className="whitespace-pre-wrap">
-                            {m.role === 'user' ? 'User: ' : 'AI: '}
-                            {m.toolInvocations && (
-                                <div className="flex flex-col gap-2">
-                                    <ToolInvocations toolInvocations={m.toolInvocations} />
-                                </div>
-                            )}
-                            {m.content && (
-                                <ReactMarkdown>{m.content}</ReactMarkdown>
-                            )}
-                        </div>
-                    ))}
-                    {suggestedQuestions.length > 0 && (
-                        <div className="flex flex-col gap-4">
-                            <h2 className="text-lg font-bold">Suggested Questions</h2>
-                            <ul className="list-disc list-inside">
-                                {suggestedQuestions.map((q, i) => (
-                                    <li key={i} onClick={() => {
-                                        append({ role: 'user', content: q });
-                                        lastSubmittedQueryRef.current = q;
-                                        setSuggestedQuestions([]);
-                                        setSubmitted(true);
-                                    }}>
-                                        {q}
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-                    )}
-                </div>
-
 
 
                 <form onSubmit={handleSubmit} className="flex justify-center">
