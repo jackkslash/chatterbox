@@ -1,12 +1,15 @@
 import React from 'react';
 import Markdown, { RuleType } from 'markdown-to-jsx'
 import TeX from '@matejmazur/react-katex'
+import 'highlight.js/styles/night-owl.css'; // or any other theme
+
 
 interface MarkdownRendererProps {
     content: string;
 }
 
 export const MarkdownRender: React.FC<MarkdownRendererProps> = ({ content }) => {
+
     return (
         <Markdown
             options={{
@@ -15,6 +18,30 @@ export const MarkdownRender: React.FC<MarkdownRendererProps> = ({ content }) => 
                         return (
                             <TeX as="div" key={state.key}>{String.raw`${node.text}`}</TeX>
                         )
+                    }
+                    if (node.type === RuleType.codeBlock) {
+                        const hljs = require('highlight.js');
+                        const language = node.lang || 'plaintext';
+                        const isLanguageSupported = hljs.getLanguage(language);
+                        if (isLanguageSupported) {
+                            return (
+                                <pre key={state.key} className='my-4 bg-zinc-600 rounded-md p-4'>
+                                    <code
+                                        className={`language-${language}`}
+                                        dangerouslySetInnerHTML={{ __html: hljs.highlight(node.text, { language }).value }}
+                                    />
+                                </pre>
+                            );
+                        } else {
+                            return (
+                                <pre key={state.key} className='my-4 bg-zinc-600 rounded-md p-4'>
+                                    <code
+                                        className="language-plaintext"
+                                        dangerouslySetInnerHTML={{ __html: hljs.highlight(node.text, { language: 'plaintext' }).value }}
+                                    />
+                                </pre>
+                            );
+                        }
                     }
                     return next()
                 },

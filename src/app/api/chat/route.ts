@@ -14,7 +14,7 @@ export async function POST(req: Request) {
         system: `You are a digital friend that helps users. 
         Given any infomration from a tool you must use that context to answer the user\'s question. 
         Always format LaTeX expressions using Markdown code blocks with latex as the specified language
-        
+        Use markdown formatting for code. Always wrap code blocks in triple backticks (\`\`\`) and specify the language immediately after the opening backticks.
         `,
         messages,
         tools: {
