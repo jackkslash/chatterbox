@@ -11,7 +11,11 @@ export async function POST(req: Request) {
 
     const result = streamText({
         model: openai('gpt-4o-mini'),
-        system: 'You are a digital friend that helps users. Given any infomration from a tool you must use that context to answer the user\'s question.',
+        system: `You are a digital friend that helps users. 
+        Given any infomration from a tool you must use that context to answer the user\'s question. 
+        Always format LaTeX expressions using Markdown code blocks with latex as the specified language
+        
+        `,
         messages,
         tools: {
             web_search: tool({

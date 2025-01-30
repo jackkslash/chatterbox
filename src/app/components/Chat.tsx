@@ -42,8 +42,8 @@ export const Chat = () => {
                             el.scrollTop = el.scrollHeight;
                         }
                     }}>
-                        {memoMessages.map(m => (
-                            <div key={m.id} className="whitespace-pre-wrap">
+                        {memoMessages.map((m, i) => (
+                            <div key={i} className="whitespace-pre-wrap">
                                 {m.role === 'user' ? 'User: ' : 'AI: '}
                                 {m.toolInvocations && (
                                     <div className="flex flex-col gap-2">
