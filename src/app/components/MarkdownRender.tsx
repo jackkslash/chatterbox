@@ -25,21 +25,47 @@ export const MarkdownRender: React.FC<MarkdownRendererProps> = ({ content }) => 
                         const isLanguageSupported = hljs.getLanguage(language);
                         if (isLanguageSupported) {
                             return (
-                                <pre key={state.key} className='my-4 bg-zinc-600 rounded-md p-4'>
-                                    <code
-                                        className={`language-${language}`}
-                                        dangerouslySetInnerHTML={{ __html: hljs.highlight(node.text, { language }).value }}
-                                    />
-                                </pre>
+                                <div className="relative">
+                                    <div className="flex justify-between items-center bg-zinc-700 p-2 rounded-t-md">
+                                        <div className="text-sm text-neutral-300">
+                                            {language}
+                                        </div>
+                                        <button
+                                            className="bg-zinc-800 hover:bg-zinc-900 text-white px-2 py-1 rounded text-sm"
+                                            onClick={() => navigator.clipboard.writeText(node.text)}
+                                        >
+                                            Copy
+                                        </button>
+                                    </div>
+                                    <pre key={state.key} className='my-0 bg-zinc-600 rounded-b-md p-4'>
+                                        <code
+                                            className={`language-${language}`}
+                                            dangerouslySetInnerHTML={{ __html: hljs.highlight(node.text, { language }).value }}
+                                        />
+                                    </pre>
+                                </div>
                             );
                         } else {
                             return (
-                                <pre key={state.key} className='my-4 bg-zinc-600 rounded-md p-4'>
-                                    <code
-                                        className="language-plaintext"
-                                        dangerouslySetInnerHTML={{ __html: hljs.highlight(node.text, { language: 'plaintext' }).value }}
-                                    />
-                                </pre>
+                                <div className="relative">
+                                    <div className="flex justify-between items-center bg-zinc-700 p-2 rounded-t-md">
+                                        <div className="text-sm text-neutral-300">
+                                            plaintext
+                                        </div>
+                                        <button
+                                            className="bg-zinc-800 hover:bg-zinc-900 text-white px-2 py-1 rounded text-sm"
+                                            onClick={() => navigator.clipboard.writeText(node.text)}
+                                        >
+                                            Copy
+                                        </button>
+                                    </div>
+                                    <pre key={state.key} className='my-0 bg-zinc-600 rounded-b-md p-4'>
+                                        <code
+                                            className="language-plaintext"
+                                            dangerouslySetInnerHTML={{ __html: hljs.highlight(node.text, { language: 'plaintext' }).value }}
+                                        />
+                                    </pre>
+                                </div>
                             );
                         }
                     }
