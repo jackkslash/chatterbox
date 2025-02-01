@@ -60,9 +60,9 @@ export const Chat = () => {
                     <div className="relative group">
                         <div className="flex items-center gap-1 p-1 rounded-md bg-neutral-900 overflow-hidden transition-all duration-200 group-hover:w-auto w-fit">
                             {[
-                                { id: 'gpt-4o-mini', label: 'Mini' },
-                                { id: 'c', label: 'Claude' },
-                                { id: 'd', label: 'DeepSeek' }
+                                { id: 'gpt-4o-mini', label: '4o-mini' },
+                                { id: 'c', label: 'Claude 3 Sonnet' },
+                                { id: 'd', label: 'DeepSeek-R1' }
                             ].map(({ id, label }) => (
                                 <button
                                     key={id}
@@ -81,14 +81,14 @@ export const Chat = () => {
             </div>
             <div className="flex flex-col max-w-3xl mx-auto gap-4 pb-24 pt-20">
                 {submitted ? (
-                    <div className="flex flex-col gap-4 max-h overflow-y-auto" ref={(el) => {
+                    <div className="flex flex-col gap-4 max-h overflow-y-auto max-w-sm sm:max-w-lg md:max-w-2xl" ref={(el) => {
                         if (el) {
                             el.scrollTop = el.scrollHeight;
                         }
                     }}>
                         {memoMessages.map((m, i) => (
                             <div key={i} className={`flex flex-col gap-2 px-3 pb-3 rounded-md 
-                            ${m.role === 'user' ? 'bg-white/70 dark:bg-neutral-800/70 pt-3' : 'bg-neutral-100/70 dark:bg-neutral-900/70'}
+                            ${m.role === 'user' ? 'bg-neutral-800/70 pt-3' : 'bg-neutral-900/70'}
                             backdrop-blur-sm shadow-sm
                             border border-neutral-800/20
                             transition-all duration-200`}>
@@ -105,19 +105,25 @@ export const Chat = () => {
                                         <MarkdownRender content={m.content} />
                                     </div>
                                 )}
+
                             </div>
+
                         ))}
                         {suggestedQuestions.length > 0 && (
-                            <div className="flex flex-col gap-4">
-                                <h2 className="text-lg font-bold">Suggested Questions</h2>
-                                <ul className="list-disc list-inside">
+                            <div className="flex flex-col gap-4 px-3 py-3 rounded-md bg-neutral-900/70 backdrop-blur-sm shadow-sm border border-neutral-800/20">
+                                <h2 className="text-lg font-medium text-neutral-200">Suggested Questions</h2>
+                                <ul className="flex flex-col gap-2">
                                     {suggestedQuestions.map((q, i) => (
-                                        <li key={i} onClick={() => {
-                                            append({ role: 'user', content: q });
-                                            lastSubmittedQueryRef.current = q;
-                                            setSuggestedQuestions([]);
-                                            setSubmitted(true);
-                                        }}>
+                                        <li
+                                            key={i}
+                                            onClick={() => {
+                                                append({ role: 'user', content: q });
+                                                lastSubmittedQueryRef.current = q;
+                                                setSuggestedQuestions([]);
+                                                setSubmitted(true);
+                                            }}
+                                            className="text-neutral-400 hover:text-white cursor-pointer transition-colors duration-200 px-2 py-1 rounded-md hover:bg-neutral-800/70"
+                                        >
                                             {q}
                                         </li>
                                     ))}
