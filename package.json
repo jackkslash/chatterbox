@@ -25,6 +25,7 @@
     "react-dom": "19.0.0",
     "react-latex-next": "^3.0.0",
     "react-markdown": "^9.0.3",
+    "sonner": "^1.7.4",
     "tailwind-scrollbar": "^3.1.0",
     "zod": "^3.24.1"
   },

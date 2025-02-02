@@ -24,7 +24,7 @@ export const WebSearch = ({ queries, result }: WebSearchProps) => {
                 {queries.map((query, index) => (
                     <div key={index} className="flex flex-col gap-2">
                         <h2 className="text-lg font-medium text-zinc-50">{query}</h2>
-                        <div className="flex overflow-x-auto pb-4 gap-4">
+                        <div className="flex overflow-x-auto pb-4 gap-4 scrollbar-thin  scrollbar-thumb-neutral-700 scrollbar-track-transparent hover:scrollbar-thumb-neutral-600">
                             {[...Array(4)].map((_, i) => (
                                 <div
                                     key={i}

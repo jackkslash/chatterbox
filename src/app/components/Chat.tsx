@@ -7,6 +7,8 @@ import { suggestQuestions } from '../actions';
 import { ToolInvocations } from './ToolInvocations';
 import { MarkdownRender } from './MarkdownRender';
 import Link from 'next/link';
+import { ModelSelector } from './ModelSelector';
+
 
 export const Chat = () => {
     const lastSubmittedQueryRef = useRef<string>('');
@@ -38,6 +40,7 @@ export const Chat = () => {
     const memoMessages = useMemo(() => messages, [messages]);
     const memoAppend = useCallback(append, [append]);
 
+
     return (
         <div className="max-w-3xl mx-auto">
             <div className="fixed top-0 left-0 right-0 z-[60] flex justify-between items-center p-4 
@@ -48,7 +51,7 @@ export const Chat = () => {
             font-sans">
                 <div className="flex items-center gap-4 space-x-4">
                     <Link
-                        href={'/'}
+                        href="/new"
 
                     >
                         <span className="font-bold tracking-tight">
@@ -56,28 +59,7 @@ export const Chat = () => {
                         </span>
                     </Link>
                 </div>
-                <div className='flex items-center space-x-4'>
-                    <div className="relative group">
-                        <div className="flex items-center gap-1 p-1 rounded-md bg-neutral-900 overflow-hidden transition-all duration-200 group-hover:w-auto w-fit">
-                            {[
-                                { id: 'gpt-4o-mini', label: '4o-mini' },
-                                { id: 'c', label: 'Claude 3 Sonnet' },
-                                { id: 'd', label: 'DeepSeek-R1' }
-                            ].map(({ id, label }) => (
-                                <button
-                                    key={id}
-                                    onClick={() => setSelectedModel(id)}
-                                    className={`px-2 py-1 text-sm rounded-md whitespace-nowrap transition-all ${selectedModel === id
-                                        ? 'bg-neutral-800 shadow-sm'
-                                        : 'text-neutral-400 hidden group-hover:block'
-                                        }`}
-                                >
-                                    {label}
-                                </button>
-                            ))}
-                        </div>
-                    </div>
-                </div>
+                <ModelSelector submitted={submitted} setSelectedModel={setSelectedModel} selectedModel={selectedModel} />
             </div>
             <div className="flex flex-col max-w-3xl mx-auto gap-4 pb-24 pt-20">
                 {submitted ? (
@@ -110,7 +92,7 @@ export const Chat = () => {
 
                         ))}
                         {suggestedQuestions.length > 0 && (
-                            <div className="flex flex-col gap-4 px-3 py-3 rounded-md bg-neutral-900/70 backdrop-blur-sm shadow-sm border border-neutral-800/20">
+                            <div className="flex flex-col gap-4 p-3 mb-24 rounded-md bg-neutral-900/70 backdrop-blur-sm shadow-sm border border-neutral-800/20">
                                 <h2 className="text-lg font-medium text-neutral-200">Suggested Questions</h2>
                                 <ul className="flex flex-col gap-2">
                                     {suggestedQuestions.map((q, i) => (
@@ -142,10 +124,10 @@ export const Chat = () => {
                     </div>
                 )}
 
-                {submitted ? (<form onSubmit={handleSubmit} className="fixed bottom-0 left-0 right-0 p-4 bg-neutral-950 z-50">
+                {submitted ? (<form onSubmit={handleSubmit} className="fixed bottom-0 left-0 right-0 p-4 bg-opacity-45 z-50">
                     <div className="max-w-3xl mx-auto">
-                        <input
-                            className="w-full p-2 border rounded shadow-xl bg-neutral-800 border-neutral-700 text-white"
+                        <textarea
+                            className="w-full h-32 p-2 border rounded shadow-xl bg-neutral-800 border-neutral-700 text-white"
                             value={input}
                             placeholder="Say something..."
                             onChange={handleInputChange}
@@ -155,7 +137,8 @@ export const Chat = () => {
                     <>
                         <form onSubmit={handleSubmit} className="w-full">
                             <div className="max-w-3xl mx-auto">
-                                <input
+                                <textarea
+                                    rows={3}
                                     className="w-full p-2 border rounded shadow-xl bg-neutral-800 border-neutral-700 text-white"
                                     value={input}
                                     placeholder="Say something..."
