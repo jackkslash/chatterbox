@@ -8,6 +8,7 @@ import { ToolInvocations } from './ToolInvocations';
 import { MarkdownRender } from './MarkdownRender';
 import Link from 'next/link';
 import { ModelSelector } from './ModelSelector';
+import { ChatForm } from './ChatForm';
 
 
 export const Chat = () => {
@@ -39,7 +40,12 @@ export const Chat = () => {
     }, [messages.length]);
     const memoMessages = useMemo(() => messages, [messages]);
     const memoAppend = useCallback(append, [append]);
-
+    const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            handleSubmit(e as any);
+        }
+    };
 
     return (
         <div className="max-w-3xl mx-auto">
@@ -61,7 +67,7 @@ export const Chat = () => {
                 </div>
                 <ModelSelector submitted={submitted} setSelectedModel={setSelectedModel} selectedModel={selectedModel} />
             </div>
-            <div className="flex flex-col max-w-3xl mx-auto gap-4 pb-24 pt-20">
+            <div className="flex flex-col pb-12 pt-20 max-w-xs sm:max-w-2xl">
                 {submitted ? (
                     <div className="flex flex-col gap-4 max-h overflow-y-auto max-w-sm sm:max-w-lg md:max-w-2xl" ref={(el) => {
                         if (el) {
@@ -69,7 +75,7 @@ export const Chat = () => {
                         }
                     }}>
                         {memoMessages.map((m, i) => (
-                            <div key={i} className={`flex flex-col gap-2 px-3 pb-3 rounded-md 
+                            <div key={i} className={`flex flex-col gap-2 px-6 pb-3 rounded-md 
                             ${m.role === 'user' ? 'bg-neutral-800/70 pt-3' : 'bg-neutral-900/70'}
                             backdrop-blur-sm shadow-sm
                             border border-neutral-800/20
@@ -78,12 +84,12 @@ export const Chat = () => {
                                     {m.role === 'user' ? 'User' : null}
                                 </div>
                                 {m.toolInvocations && (
-                                    <div className="flex flex-col gap-2">
+                                    <div className="flex flex-col gap-2 px-6">
                                         <ToolInvocations toolInvocations={m.toolInvocations} />
                                     </div>
                                 )}
                                 {m.content && (
-                                    <div className="text-zinc-50">
+                                    <div className="text-zinc-50 px-6">
                                         <MarkdownRender content={m.content} />
                                     </div>
                                 )}
@@ -124,28 +130,12 @@ export const Chat = () => {
                     </div>
                 )}
 
-                {submitted ? (<form onSubmit={handleSubmit} className="fixed bottom-0 left-0 right-0 p-4 bg-opacity-45 z-50">
-                    <div className="max-w-3xl mx-auto">
-                        <textarea
-                            className="w-full h-32 p-2 border rounded shadow-xl bg-neutral-800 border-neutral-700 text-white"
-                            value={input}
-                            placeholder="Say something..."
-                            onChange={handleInputChange}
-                        />
-                    </div>
-                </form>) : (
+                {submitted ? (<div className="fixed bottom-2 left-0 right-2 p-2 bg-opacity-45 z-50">
+                    <ChatForm handleSubmit={handleSubmit} handleInputChange={handleInputChange} input={input} handleKeyPress={handleKeyPress} />
+                </div>
+                ) : (
                     <>
-                        <form onSubmit={handleSubmit} className="w-full">
-                            <div className="max-w-3xl mx-auto">
-                                <textarea
-                                    rows={3}
-                                    className="w-full p-2 border rounded shadow-xl bg-neutral-800 border-neutral-700 text-white"
-                                    value={input}
-                                    placeholder="Say something..."
-                                    onChange={handleInputChange}
-                                />
-                            </div>
-                        </form>
+                        <ChatForm handleSubmit={handleSubmit} handleInputChange={handleInputChange} input={input} handleKeyPress={handleKeyPress} />
                         <Trending append={memoAppend} setSubmitted={setSubmitted} />
                     </>
                 )}
@@ -154,6 +144,6 @@ export const Chat = () => {
 
             </div>
 
-        </div>
+        </div >
     )
 }
