@@ -75,7 +75,7 @@ export const Chat = () => {
                         }
                     }}>
                         {memoMessages.map((m, i) => (
-                            <div key={i} className={`flex flex-col gap-2 px-6 pb-3 rounded-md 
+                            <div key={i} className={`flex flex-col gap-2 p-4 rounded-md  
                             ${m.role === 'user' ? 'bg-neutral-800/70 pt-3' : 'bg-neutral-900/70'}
                             backdrop-blur-sm shadow-sm
                             border border-neutral-800/20
@@ -84,12 +84,12 @@ export const Chat = () => {
                                     {m.role === 'user' ? 'User' : null}
                                 </div>
                                 {m.toolInvocations && (
-                                    <div className="flex flex-col gap-2 px-6">
+                                    <div className="flex flex-col gap-2">
                                         <ToolInvocations toolInvocations={m.toolInvocations} />
                                     </div>
                                 )}
                                 {m.content && (
-                                    <div className="text-zinc-50 px-6">
+                                    <div className="text-zinc-50 ">
                                         <MarkdownRender content={m.content} />
                                     </div>
                                 )}
@@ -130,7 +130,7 @@ export const Chat = () => {
                     </div>
                 )}
 
-                {submitted ? (<div className="fixed bottom-2 left-0 right-2 p-2 bg-opacity-45 z-50">
+                {submitted ? (<div className="fixed bottom-2 left-1 right-1 p-2 bg-opacity-45 z-50 ">
                     <ChatForm handleSubmit={handleSubmit} handleInputChange={handleInputChange} input={input} handleKeyPress={handleKeyPress} />
                 </div>
                 ) : (

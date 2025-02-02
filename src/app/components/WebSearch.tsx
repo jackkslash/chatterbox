@@ -50,7 +50,7 @@ export const WebSearch = ({ queries, result }: WebSearchProps) => {
     return (
         <div className="flex flex-col gap-4">
             {result.searches.map((search: any, index: number) => (
-                <div key={index} className="flex flex-col gap-2">
+                <div key={index} className="flex flex-col gap-2 w-full">
                     <h2 className="text-lg font-medium text-zinc-50">{search.query}</h2>
                     <div className="flex overflow-x-auto pb-4 gap-4 scrollbar-thin  scrollbar-thumb-neutral-700 scrollbar-track-transparent hover:scrollbar-thumb-neutral-600">
                         {search.results.map((result: any, resIndex: number) => (

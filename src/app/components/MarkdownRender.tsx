@@ -82,7 +82,19 @@ export const MarkdownRender: React.FC<MarkdownRendererProps> = ({ content }) => 
                     p: {
                         component: 'p',
                         props: {
-                            className: 'my-4',
+                            className: 'my-4 mb-2',
+                        },
+                    },
+                    ul: {
+                        component: 'ul',
+                        props: {
+                            className: 'list-disc list-inside m-2',
+                        },
+                    },
+                    ol: {
+                        component: 'ol',
+                        props: {
+                            className: 'list-decimal list-inside m-2',
                         },
                     },
                     a: {
