@@ -124,7 +124,7 @@ export const Chat = () => {
                         <h1 className='text-2xl font-bold text-neutral-200'>
                             Start a conversation
                         </h1>
-                        <p className='text-neutral-400 text-center'>
+                        <p className='text-neutral-400 text-center mb-4'>
                             Ask a question or start a discussion
                         </p>
                     </div>
@@ -134,10 +134,10 @@ export const Chat = () => {
                     <ChatForm handleSubmit={handleSubmit} handleInputChange={handleInputChange} input={input} handleKeyPress={handleKeyPress} />
                 </div>
                 ) : (
-                    <>
+                    <div className='flex flex-col gap-2'>
                         <ChatForm handleSubmit={handleSubmit} handleInputChange={handleInputChange} input={input} handleKeyPress={handleKeyPress} />
                         <Trending append={memoAppend} setSubmitted={setSubmitted} />
-                    </>
+                    </div>
                 )}
 
 

@@ -16,15 +16,8 @@ export const Trending = ({ append, setSubmitted }: { append: (message: any) => v
     });
 
     if (isLoading) return (
-        <div className="max-w-3xl mx-auto px-4">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                {[...Array(20)].map((_, i) => (
-                    <div key={i} className="animate-pulse flex flex-col rounded-md bg-neutral-800/70 p-3 h-20 w-[150px]">
-                        <div className="h-5 bg-neutral-700/70 rounded w-3/4 mb-2"></div>
-                        <div className="h-4 :bg-neutral-700/70 rounded w-1/2"></div>
-                    </div>
-                ))}
-            </div>
+        <div className="flex justify-center items-center min-h-[200px]">
+            <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-neutral-500"></div>
         </div>
     );
 
