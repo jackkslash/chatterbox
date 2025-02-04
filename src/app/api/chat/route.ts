@@ -2,20 +2,19 @@ import { openai } from '@ai-sdk/openai';
 import { streamText, tool } from 'ai';
 import { z } from 'zod';
 import { tavily } from '@tavily/core';
+import { generatePrompt } from '@/app/actions';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
     const { messages, model } = await req.json();
+    const { activeTools, toolPrompt } = await generatePrompt('web');
     const result = streamText({
         model: openai(model),
-        system: `You are a digital friend that helps users. 
-        Given any infomration from a tool you must use that context to answer the user\'s question. 
-        Always format LaTeX expressions using Markdown code blocks with latex as the specified language
-        Use markdown formatting for code. Always wrap code blocks in triple backticks (\`\`\`) and specify the language immediately after the opening backticks.
-        `,
+        system: toolPrompt,
         messages,
+        experimental_activeTools: [...activeTools],
         tools: {
             web_search: tool({
                 description: "Search the web for information with multiple queries, max results and search depth.",

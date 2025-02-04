@@ -16,10 +16,13 @@ export const Chat = () => {
     const [submitted, setSubmitted] = useState(false);
     const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>([]);
     const [selectedModel, setSelectedModel] = useState('gpt-4o-mini');
+    const [selectedGroup, setSelectedGroup] = useState('web');
+
     const { messages, input, handleInputChange, handleSubmit, append } = useChat({
         maxSteps: 5,
         body: {
             model: selectedModel,
+            group: selectedGroup
         },
         onFinish: async (message, { finishReason }) => {
             if (message.content && finishReason === 'stop' || finishReason === 'length') {
@@ -130,7 +133,7 @@ export const Chat = () => {
                     </div>
                 )}
 
-                {submitted ? (<div className="fixed bottom-2 left-1 right-1 p-2 bg-opacity-45 z-50 ">
+                {submitted ? (<div className="fixed bottom-2 left-1 right-1 p-2 bg-opacity-45 z-50 md:mx-auto sm:max-w-lg md:max-w-2xl">
                     <ChatForm handleSubmit={handleSubmit} handleInputChange={handleInputChange} input={input} handleKeyPress={handleKeyPress} />
                 </div>
                 ) : (

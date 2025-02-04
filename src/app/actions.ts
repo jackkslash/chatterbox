@@ -4,7 +4,9 @@ import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai"
 import { z } from "zod";
 
+export type SearchGroupId = 'web';
 
+export type ModelId = 'gpt-4o-mini';
 export async function suggestQuestions(history: any[]) {
     console.log(history)
     const { object } = await generateObject({
@@ -30,4 +32,30 @@ export async function suggestQuestions(history: any[]) {
     return {
         questions: object.questions
     }
+}
+
+const tools = {
+    web: ['web_search'] as const,
+}
+
+const prompts = {
+    web: `You are a digital friend that helps users. 
+        Given any infomration from a tool you must use that context to answer the user\'s question. 
+        Always format LaTeX expressions using Markdown code blocks with latex as the specified language
+        Use markdown formatting for code. Always wrap code blocks in triple backticks (\`\`\`) and specify the language immediately after the opening backticks.
+        `
+}
+
+export async function generatePrompt(id: SearchGroupId = 'web') {
+    const toolPrompt = prompts[id];
+    const activeTools = tools[id];
+    return {
+        activeTools,
+        toolPrompt
+    }
+}
+
+
+export async function getModel(modelId: ModelId = 'gpt-4o-mini') {
+    return openai(modelId);
 }
