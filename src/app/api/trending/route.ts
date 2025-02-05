@@ -53,18 +53,18 @@ export async function GET() {
         console.error(e);
         return NextResponse.json([
             {
-                icon: 'sparkles',
-                text: "What causes the Northern Lights?",
+                icon: 'globe',
+                text: "Current weather in London",
                 category: 'science'
             },
             {
                 icon: 'code',
-                text: "Explain quantum computing",
+                text: "Explain AI agaents",
                 category: 'tech'
             },
             {
                 icon: 'globe',
-                text: "Most beautiful places in Japan",
+                text: "Top travel destinations in 2025",
                 category: 'travel'
             }
         ]);

@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import React from 'react';
 
 export const Trending = ({ append, setSubmitted }: { append: (message: any) => void, setSubmitted: (submitted: boolean) => void }) => {
-    const { data: trending, isLoading, error } = useQuery({
+    const { data: trending = [], isLoading, error } = useQuery({
         queryKey: ['trending-topics'],
         queryFn: async () => {
             const response = await fetch('/api/trending');
