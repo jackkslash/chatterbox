@@ -8,8 +8,8 @@ import { generatePrompt } from '@/app/actions';
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-    const { messages, model } = await req.json();
-    const { activeTools, toolPrompt } = await generatePrompt('web');
+    const { messages, model, group } = await req.json();
+    const { activeTools, toolPrompt } = await generatePrompt(group);
     const result = streamText({
         model: openai(model),
         system: toolPrompt,

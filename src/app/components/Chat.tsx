@@ -70,7 +70,7 @@ export const Chat = () => {
                 </div>
                 <ModelSelector submitted={submitted} setSelectedModel={setSelectedModel} selectedModel={selectedModel} />
             </div>
-            <div className="flex flex-col pb-12 pt-20 max-w-xs sm:max-w-2xl">
+            <div className="flex flex-col pb-24 sm:pb-18 pt-20 max-w-xs sm:max-w-2xl">
                 {submitted ? (
                     <div className="flex flex-col gap-4 max-h overflow-y-auto max-w-sm sm:max-w-lg md:max-w-2xl" ref={(el) => {
                         if (el) {
@@ -133,12 +133,12 @@ export const Chat = () => {
                     </div>
                 )}
 
-                {submitted ? (<div className="fixed bottom-2 left-1 right-1 p-2 bg-opacity-45 z-50 md:mx-auto sm:max-w-lg md:max-w-2xl">
-                    <ChatForm handleSubmit={handleSubmit} handleInputChange={handleInputChange} input={input} handleKeyPress={handleKeyPress} />
+                {submitted ? (<div className="fixed bottom-2 left-1 right-1 sm:p-2 bg-opacity-45 z-50 mx-auto sm:max-w-2xl md:max-w-3xl bg-black/75 rounded-md shadow-md">
+                    <ChatForm handleSubmit={handleSubmit} handleInputChange={handleInputChange} input={input} handleKeyPress={handleKeyPress} selectedGroup={selectedGroup} />
                 </div>
                 ) : (
-                    <div className='flex flex-col gap-2'>
-                        <ChatForm handleSubmit={handleSubmit} handleInputChange={handleInputChange} input={input} handleKeyPress={handleKeyPress} />
+                    <div className='flex flex-col gap-8 '>
+                        <ChatForm handleSubmit={handleSubmit} handleInputChange={handleInputChange} input={input} handleKeyPress={handleKeyPress} setSelectedGroup={setSelectedGroup} selectedGroup={selectedGroup} />
                         <Trending append={memoAppend} setSubmitted={setSubmitted} />
                     </div>
                 )}
