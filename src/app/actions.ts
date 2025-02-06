@@ -6,7 +6,6 @@ import { z } from "zod";
 
 export type SearchGroupId = 'web';
 
-export type ModelId = 'gpt-4o-mini';
 export async function suggestQuestions(history: any[]) {
     console.log(history)
     const { object } = await generateObject({
@@ -53,9 +52,4 @@ export async function generatePrompt(id: SearchGroupId = 'web') {
         activeTools,
         toolPrompt
     }
-}
-
-
-export async function getModel(modelId: ModelId = 'gpt-4o-mini') {
-    return openai(modelId);
 }

@@ -70,7 +70,7 @@ export const Chat = () => {
                 </div>
                 <ModelSelector submitted={submitted} setSelectedModel={setSelectedModel} selectedModel={selectedModel} />
             </div>
-            <div className="flex flex-col pb-24 sm:pb-18 pt-20 max-w-xs sm:max-w-2xl">
+            <div className="flex flex-col pb-8 sm:pb-18 pt-20 max-w-xs sm:max-w-2xl">
                 {submitted ? (
                     <div className="flex flex-col gap-4 max-h overflow-y-auto max-w-sm sm:max-w-lg md:max-w-2xl" ref={(el) => {
                         if (el) {
