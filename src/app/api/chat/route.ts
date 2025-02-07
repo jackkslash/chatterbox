@@ -1,4 +1,4 @@
-import { streamText, tool } from 'ai';
+import { generateText, streamText, tool } from 'ai';
 import { z } from 'zod';
 import { tavily } from '@tavily/core';
 import { generatePrompt } from '@/app/actions';
