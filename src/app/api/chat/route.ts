@@ -1,14 +1,14 @@
 import { generateText, streamText, tool } from 'ai';
 import { z } from 'zod';
 import { tavily } from '@tavily/core';
-import { generatePrompt } from '@/app/actions';
+import { generatePrompt, SearchGroupId } from '@/app/actions';
 import { models } from '@/app/lib/models';
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
 
 export async function POST(req: Request) {
-    const { messages, model, group } = await req.json();
+    const { messages, model, group }: { messages: [], model: keyof typeof models, group: SearchGroupId } = await req.json();
     const { activeTools, toolPrompt } = await generatePrompt(group);
     const result = streamText({
         model: models[model],
