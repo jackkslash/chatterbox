@@ -18,7 +18,7 @@ export const Chat = () => {
     const [selectedModel, setSelectedModel] = useState('gpt-4o-mini');
     const [selectedGroup, setSelectedGroup] = useState('web');
 
-    const { messages, input, handleInputChange, handleSubmit, append } = useChat({
+    const { messages, input, handleInputChange, handleSubmit, append, isLoading, stop } = useChat({
         maxSteps: 5,
         body: {
             model: selectedModel,
@@ -53,11 +53,7 @@ export const Chat = () => {
     return (
         <div className="max-w-3xl mx-auto">
             <div className="fixed top-0 left-0 right-0 z-[60] flex justify-between items-center p-4 
-            bg-neutral-950/30 
-            backdrop-blur-lg backdrop-saturate-150
-            border-b border-neutral-800/20
-            supports-[backdrop-filter]:bg-neutral-950/30
-            font-sans">
+    bg-neutral-950/30 backdrop-blur-lg border-b border-neutral-800/20">
                 <div className="flex items-center gap-4 space-x-4">
                     <Link
                         href="/new"
@@ -70,21 +66,19 @@ export const Chat = () => {
                 </div>
                 <ModelSelector submitted={submitted} setSelectedModel={setSelectedModel} selectedModel={selectedModel} />
             </div>
-            <div className="flex flex-col pb-8 sm:pb-18 pt-20 max-w-xs sm:max-w-2xl">
+            <div className={`pb-8 sm:pb-18 pt-20 max-w-xs sm:max-w-2xl  ${submitted ? 'min-w-96' : ''}`}>
                 {submitted ? (
-                    <div className="flex flex-col gap-4 max-h overflow-y-auto max-w-sm sm:max-w-lg md:max-w-2xl" ref={(el) => {
+                    <div className="flex flex-col gap-4 sm:max-w-lg md:max-w-2xl " ref={(el) => {
                         if (el) {
                             el.scrollTop = el.scrollHeight;
                         }
                     }}>
                         {memoMessages.map((m, i) => (
-                            <div key={i} className={`flex flex-col gap-2 p-4 rounded-md  
-                            ${m.role === 'user' ? 'bg-neutral-800/70 pt-3' : 'bg-neutral-900/70'}
-                            backdrop-blur-sm shadow-sm
-                            border border-neutral-800/20
-                            transition-all duration-200`}>
+                            <div key={i} className={`p-4 rounded-md 
+                                ${m.role === 'user' ? 'bg-neutral-800/70 pt-3' : 'bg-neutral-900/70'}
+                                border border-neutral-800/20`}>
                                 <div className="text-sm font-medium text-neutral-400">
-                                    {m.role === 'user' ? 'User' : null}
+                                    {m.role === 'user' ? 'User' : selectedModel}
                                 </div>
                                 {m.toolInvocations && (
                                     <div className="flex flex-col gap-2">
@@ -101,7 +95,7 @@ export const Chat = () => {
 
                         ))}
                         {suggestedQuestions.length > 0 && (
-                            <div className="flex flex-col gap-4 p-3 mb-24 rounded-md bg-neutral-900/70 backdrop-blur-sm shadow-sm border border-neutral-800/20">
+                            <div className="flex flex-col gap-4 p-3 mb-32 rounded-md bg-neutral-900/70 border border-neutral-800/20">
                                 <h2 className="text-lg font-medium text-neutral-200">Suggested Questions</h2>
                                 <ul className="flex flex-col gap-2">
                                     {suggestedQuestions.map((q, i) => (
@@ -113,7 +107,7 @@ export const Chat = () => {
                                                 setSuggestedQuestions([]);
                                                 setSubmitted(true);
                                             }}
-                                            className="text-neutral-400 hover:text-white cursor-pointer transition-colors duration-200 px-2 py-1 rounded-md hover:bg-neutral-800/70"
+                                            className="text-neutral-400 hover:text-white cursor-pointer px-2 py-1 rounded-md hover:bg-neutral-800/70"
                                         >
                                             {q}
                                         </li>
@@ -133,11 +127,11 @@ export const Chat = () => {
                     </div>
                 )}
 
-                {submitted ? (<div className="fixed bottom-2 left-1 right-1 sm:p-2 bg-opacity-45 z-50 mx-auto sm:max-w-2xl md:max-w-3xl bg-black/75 rounded-md shadow-md">
-                    <ChatForm handleSubmit={handleSubmit} handleInputChange={handleInputChange} input={input} handleKeyPress={handleKeyPress} selectedGroup={selectedGroup} />
+                {submitted ? (<div className="fixed bottom-2 left-1 right-1 sm:p-2 z-50 mx-auto sm:max-w-2xl md:max-w-3xl bg-black/75 rounded-md">
+                    <ChatForm handleSubmit={handleSubmit} handleInputChange={handleInputChange} input={input} handleKeyPress={handleKeyPress} selectedGroup={selectedGroup} isLoading={isLoading} stop={stop} />
                 </div>
                 ) : (
-                    <div className='flex flex-col gap-8 '>
+                    <div className='flex flex-col gap-8'>
                         <ChatForm handleSubmit={handleSubmit} handleInputChange={handleInputChange} input={input} handleKeyPress={handleKeyPress} setSelectedGroup={setSelectedGroup} selectedGroup={selectedGroup} />
                         <Trending append={memoAppend} setSubmitted={setSubmitted} />
                     </div>
