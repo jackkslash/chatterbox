@@ -9,6 +9,7 @@ import { MarkdownRender } from './MarkdownRender';
 import Link from 'next/link';
 import { ModelSelector } from './ModelSelector';
 import { ChatForm } from './ChatForm';
+import { Download } from 'lucide-react';
 
 
 export const Chat = () => {
@@ -50,6 +51,20 @@ export const Chat = () => {
         }
     };
 
+    const exportData = useMemo(() => {
+        return () => {
+            const jsonString = `data:text/json;chatset=utf-8,${encodeURIComponent(
+                JSON.stringify(memoMessages, null, 2)
+            )}`;
+            const link = document.createElement("a");
+            link.href = jsonString;
+            link.download = "data.json";
+
+            link.click();
+        };
+    }, [memoMessages]);
+
+
     return (
         <div className="max-w-3xl mx-auto">
             <div className="fixed top-0 left-0 right-0 z-[60] flex justify-between items-center p-4 
@@ -66,7 +81,7 @@ export const Chat = () => {
                 </div>
                 <ModelSelector submitted={submitted} setSelectedModel={setSelectedModel} selectedModel={selectedModel} />
             </div>
-            <div className={`pb-8 sm:pb-18 pt-20 max-w-xs sm:max-w-2xl  ${submitted ? 'min-w-96' : ''}`}>
+            <div className={`pb-8 sm:pb-18 pt-20 max-w-xs sm:max-w-2xl  ${submitted ? 'md:min-w-[42rem]' : ''}`}>
                 {submitted ? (
                     <div className="flex flex-col gap-4 sm:max-w-lg md:max-w-2xl " ref={(el) => {
                         if (el) {
@@ -128,17 +143,20 @@ export const Chat = () => {
                 )}
 
                 {submitted ? (<div className="fixed bottom-2 left-1 right-1 sm:p-2 z-50 mx-auto sm:max-w-2xl md:max-w-3xl bg-black/75 rounded-md">
+                    <button disabled={isLoading}
+                        onClick={exportData}
+                        className="text-neutral-400 hover:text-white cursor-pointer p-1 mb-1 rounded-md hover:bg-neutral-800/70"
+                    >
+                        <Download size={16} />
+                    </button>
                     <ChatForm handleSubmit={handleSubmit} handleInputChange={handleInputChange} input={input} handleKeyPress={handleKeyPress} selectedGroup={selectedGroup} isLoading={isLoading} stop={stop} />
                 </div>
                 ) : (
-                    <div className='flex flex-col gap-8'>
+                    <div className='flex flex-col gap-8 sm:min-w-[22rem] md:min-w-[42rem]'>
                         <ChatForm handleSubmit={handleSubmit} handleInputChange={handleInputChange} input={input} handleKeyPress={handleKeyPress} setSelectedGroup={setSelectedGroup} selectedGroup={selectedGroup} />
-                        <Trending append={memoAppend} setSubmitted={setSubmitted} />
+                        {selectedGroup === 'web' && <Trending append={memoAppend} setSubmitted={setSubmitted} />}
                     </div>
                 )}
-
-
-
             </div>
 
         </div >
