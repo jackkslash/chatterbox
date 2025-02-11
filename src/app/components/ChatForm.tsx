@@ -1,5 +1,6 @@
 import React from 'react'
 import { BookA, FileText, Search, Send, StopCircleIcon } from 'lucide-react'
+import { ModelSelector } from './ModelSelector';
 
 const systemActions = [
     { id: 'web', icon: <Search size={16} /> },
@@ -16,9 +17,12 @@ interface ChatFormProps {
     setSelectedGroup?: (group: string) => void;
     isLoading?: boolean;
     stop?: () => void;
+    submitted?: boolean;
+    setSelectedModel?: (model: string) => void;
+    selectedModel?: string;
 }
 
-export const ChatForm = ({ handleSubmit, handleInputChange, input, handleKeyPress, selectedGroup, setSelectedGroup, isLoading, stop }: ChatFormProps) => {
+export const ChatForm = ({ handleSubmit, handleInputChange, input, handleKeyPress, selectedGroup, setSelectedGroup, isLoading, stop, setSelectedModel, selectedModel, submitted }: ChatFormProps) => {
     return (
         <><form onSubmit={handleSubmit}>
             <div className="max-w-3xl mx-auto sm:mx-0 sm:p-0">
@@ -30,8 +34,9 @@ export const ChatForm = ({ handleSubmit, handleInputChange, input, handleKeyPres
                         onChange={handleInputChange}
                         onKeyDown={handleKeyPress}
                     />
-                    <div className="flex justify-between items-center p-2">
-                        <div className="flex-start">
+                    <div className="flex items-center justify-between gap-4 p-2">
+                        <div className="flex items-center gap-4">
+                            {!submitted && setSelectedModel && <ModelSelector submitted={submitted} setSelectedModel={setSelectedModel} selectedModel={selectedModel} />}
                             {setSelectedGroup && <div className="block group w-fit">
                                 <div className="flex items-center gap-1 p-1 rounded-md bg-neutral-900 overflow-hidden transition-all duration-200 w-fit">
                                     {systemActions.map((action) => (

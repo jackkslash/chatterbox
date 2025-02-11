@@ -79,7 +79,6 @@ export const Chat = () => {
                         </span>
                     </Link>
                 </div>
-                <ModelSelector submitted={submitted} setSelectedModel={setSelectedModel} selectedModel={selectedModel} />
             </div>
             <div className={`pb-8 sm:pb-18 pt-20 max-w-xs sm:max-w-2xl  ${submitted ? 'md:min-w-[42rem]' : ''}`}>
                 {submitted ? (
@@ -153,7 +152,7 @@ export const Chat = () => {
                 </div>
                 ) : (
                     <div className='flex flex-col gap-8 sm:min-w-[22rem] md:min-w-[42rem]'>
-                        <ChatForm handleSubmit={handleSubmit} handleInputChange={handleInputChange} input={input} handleKeyPress={handleKeyPress} setSelectedGroup={setSelectedGroup} selectedGroup={selectedGroup} />
+                        <ChatForm handleSubmit={handleSubmit} handleInputChange={handleInputChange} input={input} handleKeyPress={handleKeyPress} setSelectedGroup={setSelectedGroup} submitted={submitted} selectedGroup={selectedGroup} setSelectedModel={setSelectedModel} selectedModel={selectedModel} />
                         {selectedGroup === 'web' && <Trending append={memoAppend} setSubmitted={setSubmitted} />}
                     </div>
                 )}
