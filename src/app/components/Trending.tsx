@@ -1,7 +1,8 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import React from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import React, { useRef } from 'react';
 
 export const Trending = ({ append, setSubmitted }: { append: (message: any) => void, setSubmitted: (submitted: boolean) => void }) => {
     const { data: trending = [], isLoading, error } = useQuery({
@@ -28,18 +29,30 @@ export const Trending = ({ append, setSubmitted }: { append: (message: any) => v
         setSubmitted(true);
     };
 
+    const scrollRef = useRef<HTMLDivElement>(null);
+
+    const scroll = (direction: number): void => {
+        if (scrollRef.current) {
+            scrollRef.current.scrollBy({ left: direction * 200, behavior: 'smooth' });
+        }
+    }
+
     return (
-        <div className="max-w-3xl mx-auto px-4">
-            <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4'>
+        <div className="relative w-full max-w-4xl mx-auto">
+            <button onClick={() => scroll(-1)}
+                className='absolute top-1/2 -translate-x-6 -translate-y-1/2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-neutral-800/70 hover:bg-neutral-800/90 backdrop-blur-sm shadow-sm border border-neutral-800/20 transition-all duration-200'>
+                <ChevronLeft />
+            </button>
+            <div ref={scrollRef} className="flex gap-4 overflow-x-auto" style={{ scrollBehavior: 'smooth', scrollbarWidth: 'none' }}>
                 {trending.map((t: any) => (
                     <div
                         key={t.text}
                         onClick={() => handleSubmit(t.text)}
-                        className="cursor-pointer flex flex-col rounded-md 
-                        bg-neutral-800/70 :hover:bg-neutral-800/90
-                        backdrop-blur-sm shadow-sm
-                        border border-neutral-800/20
-                        p-3 transition-all duration-200"
+                        className="cursor-pointer flex-shrink-0 rounded-md 
+                bg-neutral-800/70 hover:bg-neutral-800/90
+                backdrop-blur-sm shadow-sm
+                border border-neutral-800/20
+                p-3 transition-all duration-200 w-fit"
                     >
                         <div>
                             <h3 className="text-sm font-medium text-zinc-50">{t.text}</h3>
@@ -48,6 +61,10 @@ export const Trending = ({ append, setSubmitted }: { append: (message: any) => v
                     </div>
                 ))}
             </div>
+            <button onClick={() => scroll(1)}
+                className='absolute top-1/2 translate-x-6 -translate-y-1/2 right-0 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-neutral-800/70 hover:bg-neutral-800/90 backdrop-blur-sm shadow-sm border border-neutral-800/20 transition-all duration-200'>
+                <ChevronRight />
+            </button>
         </div>
     );
 };
