@@ -33,17 +33,22 @@ export const Trending = ({ append, setSubmitted }: { append: (message: any) => v
 
     const scroll = (direction: number): void => {
         if (scrollRef.current) {
-            scrollRef.current.scrollBy({ left: direction * 200, behavior: 'smooth' });
+            const currentScroll = scrollRef.current.scrollLeft;
+            scrollRef.current.scrollTo({
+                left: currentScroll + (direction * 200),
+                behavior: 'smooth'
+            });
         }
     }
-
     return (
         <div className="relative w-full max-w-4xl mx-auto">
-            <button onClick={() => scroll(-1)}
-                className='absolute top-1/2 -translate-x-6 -translate-y-1/2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-neutral-800/70 hover:bg-neutral-800/90 backdrop-blur-sm shadow-sm border border-neutral-800/20 transition-all duration-200'>
+            <button
+                onClick={() => scroll(-1)}
+                className={`absolute top-1/2 -translate-x-6 -translate-y-1/2 z-10 flex h-8 w-8 items-center justify-center rounded-full bg-neutral-800/70 hover:bg-neutral-800/90 backdrop-blur-sm shadow-sm border border-neutral-800/20 transition-all duration-200`}
+            >
                 <ChevronLeft />
             </button>
-            <div ref={scrollRef} className="flex gap-4 overflow-x-auto" style={{ scrollBehavior: 'smooth', scrollbarWidth: 'none' }}>
+            <div ref={scrollRef} className="flex gap-4 overflow-x-auto rounded" style={{ scrollBehavior: 'smooth', scrollbarWidth: 'none' }}>
                 {trending.map((t: any) => (
                     <div
                         key={t.text}

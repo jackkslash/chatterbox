@@ -7,7 +7,6 @@ import { suggestQuestions } from '../actions';
 import { ToolInvocations } from './ToolInvocations';
 import { MarkdownRender } from './MarkdownRender';
 import Link from 'next/link';
-import { ModelSelector } from './ModelSelector';
 import { ChatForm } from './ChatForm';
 import { Download } from 'lucide-react';
 
@@ -132,12 +131,9 @@ export const Chat = () => {
                     </div>
                 ) : (
                     <div className='flex flex-col items-center justify-center gap-4'>
-                        <h1 className='text-2xl font-bold text-neutral-200'>
-                            Start a conversation
+                        <h1 className='text-2xl font-bold text-neutral-200 pb-8'>
+                            Talk to me.
                         </h1>
-                        <p className='text-neutral-400 text-center mb-4'>
-                            Ask a question or start a discussion
-                        </p>
                     </div>
                 )}
 

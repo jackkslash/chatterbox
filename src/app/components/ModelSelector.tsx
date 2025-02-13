@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Toaster, toast } from 'sonner'
 import { modelOptions } from '../lib/models';
-import { XIcon } from 'lucide-react';
 
 interface ModelSelectorProps {
     submitted?: boolean;
