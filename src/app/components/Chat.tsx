@@ -1,12 +1,10 @@
 'use client';
-
-import { useChat } from 'ai/react';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { useChat } from '@ai-sdk/react';
 import { Trending } from './Trending';
 import { suggestQuestions } from '../actions';
 import { ToolInvocations } from './ToolInvocations';
 import { MarkdownRender } from './MarkdownRender';
-import Link from 'next/link';
 import { ChatForm } from './ChatForm';
 import { Download } from 'lucide-react';
 
@@ -66,19 +64,6 @@ export const Chat = () => {
 
     return (
         <div className="max-w-3xl mx-auto">
-            <div className="fixed top-0 left-0 right-0 z-[60] flex justify-between items-center p-4 
-    bg-neutral-950/30 backdrop-blur-lg border-b border-neutral-800/20">
-                <div className="flex items-center gap-4 space-x-4">
-                    <Link
-                        href="/new"
-
-                    >
-                        <span className="font-bold tracking-tight">
-                            CHATTERBOX
-                        </span>
-                    </Link>
-                </div>
-            </div>
             <div className={`pb-8 sm:pb-18 pt-20 max-w-xs sm:max-w-2xl  ${submitted ? 'md:min-w-[42rem]' : ''}`}>
                 {submitted ? (
                     <div className="flex flex-col gap-4 sm:max-w-lg md:max-w-2xl " ref={(el) => {
@@ -153,7 +138,6 @@ export const Chat = () => {
                     </div>
                 )}
             </div>
-
         </div >
     )
 }
