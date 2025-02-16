@@ -5,7 +5,7 @@ import { ModelSelector } from './ModelSelector';
 const systemActions = [
     { id: 'web', icon: <Search size={16} /> },
     { id: 'pfd', icon: <FileText size={16} /> },
-    { id: 'research', icon: <BookA size={16} /> }
+    { id: 'academic', icon: <BookA size={16} /> }
 ]
 
 interface ChatFormProps {

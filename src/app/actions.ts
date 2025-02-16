@@ -4,7 +4,7 @@ import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai"
 import { z } from "zod";
 
-export type SearchGroupId = 'web';
+export type SearchGroupId = 'web' | 'academic'
 
 export async function suggestQuestions(history: any[]) {
     console.log(history)
@@ -35,6 +35,7 @@ export async function suggestQuestions(history: any[]) {
 
 const tools = {
     web: ['web_search'] as const,
+    academic: ['academic_search'] as const,
 }
 
 const prompts = {
@@ -42,10 +43,20 @@ const prompts = {
         Given any infomration from a tool you must use that context to answer the user\'s question. 
         Always format LaTeX expressions using Markdown code blocks with latex as the specified language
         Use markdown formatting for code. Always wrap code blocks in triple backticks (\`\`\`) and specify the language immediately after the opening backticks.
-        `
+        `,
+    academic: `You are an academic research assistant that helps find and analyze scholarly content.
+    The current date is ${new Date().toLocaleDateString("en-US", { year: "numeric", month: "short", day: "2-digit", weekday: "short" })}.
+    Focus on peer-reviewed papers, citations, and academic sources.
+    Do not talk in bullet points or lists at all costs as it is unpresentable.
+    Provide summaries, key points, and references.
+    Latex should be wrapped with $ symbol for inline and $$ for block equations as they are supported in the response.
+    No matter what happens, always provide the citations at the end of each paragraph and in the end of sentences where you use it in which they are referred to with the given format to the information provided.
+    Citation format: [Author et al. (Year) Title](URL)
+    Always run the tools first and then write the response.`,
 }
 
 export async function generatePrompt(id: SearchGroupId = 'web') {
+    console.log(id)
     const toolPrompt = prompts[id];
     const activeTools = tools[id];
     return {

@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { tavily } from '@tavily/core';
 import { generatePrompt, SearchGroupId } from '@/app/actions';
 import { models } from '@/app/lib/models';
+import Exa from "exa-js"
 
 // Allow streaming responses up to 30 seconds
 export const maxDuration = 30;
@@ -61,6 +62,29 @@ export async function POST(req: Request) {
                     return {
                         searches: searchResults,
                     };
+                },
+            }),
+            academic_search: tool({
+                description: "Search academic papers with a query.",
+                parameters: z.object({
+                    query: z.string().describe("The query to search for."),
+                    quantity: z.number().describe("The number of results to return.").default(10),
+                }),
+                execute: async ({ query, quantity }: { query: string; quantity: number }) => {
+                    const exa = new Exa(process.env.EXA_API_KEY);
+
+                    const results = await exa.searchAndContents(query, {
+                        type: 'auto',
+                        numResults: quantity,
+                        category: 'research paper',
+                        summary: {
+                            query: 'Abstract of the research paper',
+                        },
+                    });
+
+                    return {
+                        results
+                    }
                 },
             }),
         },

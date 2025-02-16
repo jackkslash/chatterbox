@@ -19,6 +19,7 @@
     "@tavily/core": "^0.0.2",
     "ai": "^4.1.36",
     "eslint-config-next": "^15.1.7",
+    "exa-js": "^1.4.10",
     "highlight.js": "^11.11.1",
     "katex": "^0.16.21",
     "lucide-react": "^0.475.0",
