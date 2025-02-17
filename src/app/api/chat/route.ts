@@ -83,7 +83,13 @@ export async function POST(req: Request) {
                     });
 
                     return {
-                        results
+                        results: results.results.map((result) => ({
+                            title: result.title,
+                            url: result.url,
+                            publisedAt: result.publishedDate,
+                            summary: result.summary,
+                            author: result.author,
+                        }))
                     }
                 },
             }),

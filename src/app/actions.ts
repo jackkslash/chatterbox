@@ -7,7 +7,6 @@ import { z } from "zod";
 export type SearchGroupId = 'web' | 'academic'
 
 export async function suggestQuestions(history: any[]) {
-    console.log(history)
     const { object } = await generateObject({
         model: openai("gpt-4o-mini"),
         temperature: 0,
@@ -27,7 +26,6 @@ export async function suggestQuestions(history: any[]) {
             questions: z.array(z.string()).describe('The generated questions based on the message history.')
         }),
     });
-    console.log(object.questions)
     return {
         questions: object.questions
     }
@@ -51,12 +49,13 @@ const prompts = {
     Provide summaries, key points, and references.
     Latex should be wrapped with $ symbol for inline and $$ for block equations as they are supported in the response.
     No matter what happens, always provide the citations at the end of each paragraph and in the end of sentences where you use it in which they are referred to with the given format to the information provided.
-    Citation format: [Author et al. (Year) Title](URL)
-    Always run the tools first and then write the response.`,
+    Citation format is to be in the format [Author et al. (Year) Title](URL) for markdown to read.
+    Always run the tools first and then write the response.
+    If you have already provided a response containing papers, you may continue to answer questions about the current topic within your cappable knowladge without having to fetch more papers
+    You can rerun the search if the topic has changed or if you are asked specifcly to again on existing or new topics.`,
 }
 
 export async function generatePrompt(id: SearchGroupId = 'web') {
-    console.log(id)
     const toolPrompt = prompts[id];
     const activeTools = tools[id];
     return {
