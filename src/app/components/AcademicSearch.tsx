@@ -26,15 +26,18 @@ export const AcademicSearch = ({ query, result }: AcademicSearchProps) => {
                         <div
                             key={i}
                             className="flex items-start gap-3 p-3 rounded-md 
-                            bg-neutral-800/70
+                            bg-neutral-800/70 hover:bg-neutral-800/90
                             backdrop-blur-sm shadow-sm
                             border border-neutral-800/20
-                            min-w-[300px]"
+                            transition-all duration-200
+                            min-w-[300px] max-h-40 overflow-hidden"
                         >
-                            <div className="w-10 h-10 rounded-lg bg-neutral-700 flex items-center justify-center" />
-                            <div className="flex-1">
+                            <div className="w-10 h-10 rounded-lg bg-neutral-700 flex items-center justify-center shrink-0" />
+                            <div className="flex-1 overflow-hidden">
                                 <div className="h-4 w-3/4 bg-neutral-700 rounded mb-2" />
-                                <div className="h-3 w-1/2 bg-neutral-700 rounded" />
+                                <div className="h-3 w-1/2 bg-neutral-700 rounded mb-2" />
+                                <div className="h-3 w-1/3 bg-neutral-700 rounded mb-2" />
+                                <div className="h-3 w-2/3 bg-neutral-700 rounded mt-2" />
                             </div>
                         </div>
                     ))}
@@ -54,12 +57,14 @@ export const AcademicSearch = ({ query, result }: AcademicSearchProps) => {
                 {result.results.map((item, index) => (
                     <div
                         key={index}
+                        onClick={() => item.url && window.open(item.url, '_blank')}
                         className="flex items-start gap-3 p-3 rounded-md 
                         bg-neutral-800/70 hover:bg-neutral-800/90
                         backdrop-blur-sm shadow-sm
                         border border-neutral-800/20
                         transition-all duration-200
-                        min-w-[300px] max-h-40 overflow-hidden"
+                        min-w-[300px] max-h-40 overflow-hidden
+                        cursor-pointer"
                     >
                         <div className="w-10 h-10 rounded-lg bg-neutral-800 flex items-center justify-center shrink-0">
                             📚

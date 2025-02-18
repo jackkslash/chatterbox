@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import { BookA, FileText, Search, Send, StopCircleIcon } from 'lucide-react'
 import { ModelSelector } from './ModelSelector';
+import { ModelId } from '../lib/models';
 
 const systemActions = [
     { id: 'web', icon: <Search size={16} /> },
@@ -9,16 +10,16 @@ const systemActions = [
 ]
 
 interface ChatFormProps {
-    handleSubmit: (e: any) => void;
-    handleInputChange: (e: any) => void;
+    handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+    handleInputChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
     input: string;
-    handleKeyPress: (e: any) => void;
+    handleKeyPress: (e: React.KeyboardEvent<HTMLTextAreaElement>) => void;
     selectedGroup: string;
-    setSelectedGroup?: (group: string) => void;
+    setSelectedGroup?: Dispatch<SetStateAction<string>>;
     isLoading?: boolean;
     stop?: () => void;
     submitted?: boolean;
-    setSelectedModel?: (model: string) => void;
+    setSelectedModel?: Dispatch<SetStateAction<ModelId>>;
     selectedModel?: string;
 }
 
@@ -41,8 +42,12 @@ export const ChatForm = ({ handleSubmit, handleInputChange, input, handleKeyPres
                                 <div className="flex items-center gap-1 p-1 rounded-md bg-neutral-900 overflow-hidden transition-all duration-200 w-fit">
                                     {systemActions.map((action) => (
                                         <button
+                                            type="button"
                                             key={action.id}
-                                            onClick={() => setSelectedGroup(action.id)}
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                setSelectedGroup(action.id);
+                                            }}
                                             className={`group-hover:w-fit px-2 py-1 text-sm rounded-md whitespace-nowrap transition-all ${selectedGroup === action.id
                                                 ? 'bg-neutral-800 shadow-sm'
                                                 : 'text-neutral-400 hidden group-hover:block'

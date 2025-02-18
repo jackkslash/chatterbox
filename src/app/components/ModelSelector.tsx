@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
 import { Toaster, toast } from 'sonner'
-import { modelOptions } from '../lib/models';
+import { ModelId, modelOptions } from '../lib/models';
 
 interface ModelSelectorProps {
     submitted?: boolean;
-    setSelectedModel?: (model: string) => void;
+    setSelectedModel?: Dispatch<SetStateAction<ModelId>>;
     selectedModel?: string;
 }
 
@@ -28,6 +28,7 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({ submitted, setSele
                 <div
                     className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-50"
                     onClick={(e) => {
+                        e.preventDefault();
                         if (e.target === e.currentTarget) setIsOpen(false);
                     }}
                 >
@@ -37,7 +38,8 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({ submitted, setSele
 
                                 <button
                                     key={id}
-                                    onClick={() => {
+                                    onClick={(e) => {
+                                        e.preventDefault();
                                         if (!submitted && setSelectedModel && active) {
                                             setSelectedModel(id);
                                             setIsOpen(false);
@@ -60,7 +62,11 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({ submitted, setSele
             {/* Desktop Dropdown */}
             <div className="hidden md:block relative">
                 <button
-                    onClick={() => setIsOpen(!isOpen)}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        setIsOpen(!isOpen)
+                    }
+                    }
                     className="px-3 py-1 rounded-md bg-neutral-900 text-sm text-neutral-400"
                 >
                     {modelOptions.find(m => m.id === selectedModel)?.label || 'Select Model'}
@@ -79,7 +85,8 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({ submitted, setSele
                                     .map(({ id, label, active }) => (
                                         <button
                                             key={id}
-                                            onClick={() => {
+                                            onClick={(e) => {
+                                                e.preventDefault();
                                                 if (active && !submitted && setSelectedModel) {
                                                     setSelectedModel(id);
                                                     setIsOpen(false);

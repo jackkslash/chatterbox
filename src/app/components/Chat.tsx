@@ -7,13 +7,17 @@ import { ToolInvocations } from './ToolInvocations';
 import { MarkdownRender } from './MarkdownRender';
 import { ChatForm } from './ChatForm';
 import { Download } from 'lucide-react';
+import { modelOptions } from '../lib/models';
 
 
 export const Chat = () => {
     const lastSubmittedQueryRef = useRef<string>('');
     const [submitted, setSubmitted] = useState(false);
     const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>([]);
-    const [selectedModel, setSelectedModel] = useState('gpt-4o-mini');
+    const [selectedModel, setSelectedModel] = useState(() => {
+        const defaultModel = modelOptions.find(m => m.default)?.id || modelOptions[0].id;
+        return defaultModel;
+    });
     const [selectedGroup, setSelectedGroup] = useState('web');
 
     const { messages, input, handleInputChange, handleSubmit, append, isLoading, stop } = useChat({

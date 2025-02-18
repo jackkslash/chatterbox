@@ -13,12 +13,13 @@ export interface ModelOption {
     id: ModelId;
     label: string;
     active: boolean;
+    default?: boolean;
 }
 
 export const modelOptions: ModelOption[] = [
     { id: ModelId.GPT4O_MINI, label: 'GPT-4o Mini', active: true },
     { id: ModelId.O3_MINI, label: 'o3-mini', active: false },
-    { id: ModelId.GEMINI_2_0_FLASH, label: 'Gemini 2.0 Flash', active: true },
+    { id: ModelId.GEMINI_2_0_FLASH, label: 'Gemini 2.0 Flash', active: true, default: true },
     { id: ModelId.GEMINI_2_0_FLASH_LITE, label: 'Gemini 2.0 Flash Lite Preview', active: true },
 ]
 
