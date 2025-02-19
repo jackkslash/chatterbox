@@ -29,7 +29,7 @@ export const Chat = () => {
         onFinish: async (message, { finishReason }) => {
             if (message.content && finishReason === 'stop' || finishReason === 'length') {
                 const newHistory = [...messages, { role: "user", content: lastSubmittedQueryRef.current }, { role: "assistant", content: message.content }];
-                const { questions } = await suggestQuestions(newHistory);
+                const { questions } = await suggestQuestions(newHistory, selectedModel);
                 setSuggestedQuestions(questions);
                 console.log(suggestedQuestions);
             }

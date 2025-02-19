@@ -1,14 +1,15 @@
 'use server'
 
-import { openai } from "@ai-sdk/openai";
 import { generateObject } from "ai"
 import { z } from "zod";
+import { models, ModelId } from "./lib/models";
 
 export type SearchGroupId = 'web' | 'academic'
 
-export async function suggestQuestions(history: any[]) {
+export async function suggestQuestions(history: any[], selectedModel: ModelId) {
+    console.log(selectedModel);
     const { object } = await generateObject({
-        model: openai("gpt-4o-mini"),
+        model: models[selectedModel],
         temperature: 0,
         maxTokens: 300,
         topP: 0.3,
@@ -26,6 +27,7 @@ export async function suggestQuestions(history: any[]) {
             questions: z.array(z.string()).describe('The generated questions based on the message history.')
         }),
     });
+    console.log(object);
     return {
         questions: object.questions
     }
