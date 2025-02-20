@@ -34,7 +34,7 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({ submitted, setSele
                 >
                     <div className="absolute bottom-0 left-0 right-0 bg-neutral-900 rounded-t-xl p-4">
                         <div className="flex flex-col space-y-2">
-                            {modelOptions.map(({ id, label, active }) => (
+                            {modelOptions.map(({ id, label, active, paid }) => (
 
                                 <button
                                     key={id}
@@ -48,7 +48,7 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({ submitted, setSele
                                         }
                                     }}
                                     className={`px-4 py-2 text-left rounded-md ${selectedModel === id ? 'bg-neutral-800' : 'text-neutral-400'
-                                        } ${!active ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                        } ${(!active || paid) ? 'opacity-50 cursor-not-allowed' : ''}`}
                                 >
                                     {label}
                                 </button>
@@ -82,22 +82,26 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({ submitted, setSele
                             <div className="flex flex-col p-1">
                                 {modelOptions
                                     .sort((a, b) => (b.active ? 1 : 0) - (a.active ? 1 : 0))
-                                    .map(({ id, label, active }) => (
+                                    .map(({ id, label, active, paid }) => (
                                         <button
                                             key={id}
                                             onClick={(e) => {
                                                 e.preventDefault();
-                                                if (active && !submitted && setSelectedModel) {
+                                                if (active && !paid && !submitted && setSelectedModel) {
                                                     setSelectedModel(id);
                                                     setIsOpen(false);
                                                 } else {
-                                                    toast.info(active ? 'Can not change model while mid-conversation.' : 'This model is not available.');
+                                                    toast.info(
+                                                        !active ? 'This model is not available.' :
+                                                            paid ? 'This is a paid model.' :
+                                                                'Can not change model while mid-conversation.'
+                                                    );
                                                 }
                                             }}
                                             className={`px-2 py-1 text-sm rounded-md whitespace-nowrap ${selectedModel === id
-                                                ? 'bg-neutral-800 shadow-sm'
-                                                : 'text-neutral-400'
-                                                } ${!active ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                                    ? 'bg-neutral-800 shadow-sm'
+                                                    : 'text-neutral-400'
+                                                } ${(!active || paid) ? 'opacity-50 cursor-not-allowed' : ''}`}
                                         >
                                             {label}
                                         </button>
