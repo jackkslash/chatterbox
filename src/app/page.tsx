@@ -1,5 +1,5 @@
-import { Chat } from './components/Chat';
-import { NavigationBar } from './components/NavigationBar';
+import { Chat } from '@/components/Chat';
+import { NavigationBar } from '@/components/NavigationBar';
 
 export default function page() {
 

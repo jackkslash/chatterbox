@@ -2,7 +2,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useChat } from '@ai-sdk/react';
 import { Trending } from './Trending';
-import { suggestQuestions } from '../actions';
+import { suggestQuestions } from '@/app/actions';
 import { ToolInvocations } from './ToolInvocations';
 import { MarkdownRender } from './MarkdownRender';
 import { ChatForm } from './ChatForm';

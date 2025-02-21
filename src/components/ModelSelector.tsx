@@ -99,8 +99,8 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({ submitted, setSele
                                                 }
                                             }}
                                             className={`px-2 py-1 text-sm rounded-md whitespace-nowrap ${selectedModel === id
-                                                    ? 'bg-neutral-800 shadow-sm'
-                                                    : 'text-neutral-400'
+                                                ? 'bg-neutral-800 shadow-sm'
+                                                : 'text-neutral-400'
                                                 } ${(!active || paid) ? 'opacity-50 cursor-not-allowed' : ''}`}
                                         >
                                             {label}

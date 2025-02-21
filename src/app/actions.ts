@@ -2,7 +2,7 @@
 
 import { generateObject } from "ai"
 import { z } from "zod";
-import { models, ModelId } from "./lib/models";
+import { models, ModelId } from "@/lib/models";
 
 export type SearchGroupId = 'web' | 'academic'
 
