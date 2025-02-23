@@ -2,7 +2,7 @@ import { streamText, tool } from 'ai';
 import { z } from 'zod';
 import { tavily } from '@tavily/core';
 import { generatePrompt, SearchGroupId } from '@/app/actions';
-import { models } from '@/app/lib/models';
+import { models } from '../../../lib/models';
 import Exa from "exa-js"
 
 // Allow streaming responses up to 30 seconds
