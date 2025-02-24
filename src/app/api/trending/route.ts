@@ -10,7 +10,7 @@ export interface TrendingQuery {
 }
 
 async function getTrending(): Promise<TrendingQuery[]> {
-    const response = await fetch('https://trends.google.com/trends/trendingsearches/daily/rss');
+    const response = await fetch('https://trends.google.com/trending/rss');
 
     if (!response.ok) {
         throw new Error('Failed to fetch trending');
