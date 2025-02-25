@@ -2,7 +2,8 @@
 import { signOut, useSession } from "@/lib/auth-client";
 import { ArrowLeft, Box, Clock, Mail, Paperclip, Settings, User } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function ProfileLayout({
     children,
@@ -10,62 +11,147 @@ export default function ProfileLayout({
     children: React.ReactNode
 }) {
     const router = useRouter()
+    const pathname = usePathname()
     const {
         data: session,
-        isPending, //loading state
-        error, //error object
-        refetch //refetch the session
+        isPending,
+        error,
     } = useSession()
 
+    // Redirect to login if not authenticated
+    useEffect(() => {
+        if (!isPending && !session) {
+            router.push('/auth')
+        }
+    }, [session, isPending, router])
+
+    // Show loading state while checking authentication
+    if (isPending) {
+        return (
+            <div className="flex items-center justify-center min-h-screen">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-neutral-500"></div>
+            </div>
+        )
+    }
+
+    // Don't render anything if not authenticated (will redirect)
+    if (!session) {
+        return null
+    }
+
     return (
-        <div>
-            <div className='flex flex-row justify-between items-center p-6'>
-                <Link href={'/'} className='flex flex-row gap-4'><ArrowLeft size={24} /> Back to chat</Link>
-                <button onClick={async () => {
-                    await signOut({
-                        fetchOptions: {
-                            onSuccess: () => {
-                                router.push('/')
-                            },
-                        },
-                    });
-                }}>
-                    Logout
-                </button>
+        <div className="min-h-screen bg-background">
+            <div className='flex flex-row justify-between items-center p-6 border-b border-neutral-800/20'>
+                <Link href={'/'} className='flex flex-row gap-4 items-center hover:text-neutral-300 transition-colors'>
+                    <ArrowLeft size={24} /> Back to chat
+                </Link>
+                <div className="flex items-center gap-4">
+                    <span className="text-neutral-400">
+                        {session.user?.name || session.user?.email}
+                    </span>
+                    <button
+                        onClick={async () => {
+                            await signOut({
+                                fetchOptions: {
+                                    onSuccess: () => {
+                                        router.push('/')
+                                    },
+                                },
+                            });
+                        }}
+                        className="px-4 py-2 rounded-md bg-neutral-800 hover:bg-neutral-700 transition-colors"
+                    >
+                        Logout
+                    </button>
+                </div>
             </div>
             <div className="flex flex-col md:flex-row w-full md:max-w-6xl md:mx-auto">
-                <nav className="fixed md:static bottom-0 left-0 right-0 md:w-64 z-10 md:space-y-2 p-4">
-                    <div className="flex md:flex-col justify-around md:justify-start">
-                        <Link href="/profile/account" className="flex items-center justify-center md:justify-start gap-2 p-2">
+                <nav className="md:static md:w-64 z-10 md:space-y-2 p-4 md:min-h-[calc(100vh-80px)] md:border-r border-neutral-800/20">
+                    <div className="hidden md:block mb-6">
+                        <h2 className="text-xl font-semibold">Profile Settings</h2>
+                        <p className="text-sm text-neutral-400">Manage your account and preferences</p>
+                    </div>
+                    <div className="flex md:flex-col justify-around md:justify-start md:space-y-2">
+                        <NavLink href="/profile/account" active={pathname === '/profile/account'}>
                             <User size={24} />
                             <span className="hidden md:inline">Account</span>
-                        </Link>
-                        <Link href="/profile/customisation" className="flex items-center justify-center md:justify-start gap-2 p-2 ">
+                        </NavLink>
+                        <NavLink href="/profile/customisation" active={pathname === '/profile/customisation'}>
                             <Settings size={24} />
                             <span className="hidden md:inline">Customisation</span>
-                        </Link>
-                        <Link href="/profile/history" className="flex items-center justify-center md:justify-start gap-2 p-2 ">
+                        </NavLink>
+                        <NavLink href="/profile/history" active={pathname === '/profile/history'}>
                             <Clock size={24} />
                             <span className="hidden md:inline">History</span>
-                        </Link>
-                        <Link href="/profile/models" className="flex items-center justify-center md:justify-start gap-2 p-2 ">
+                        </NavLink>
+                        <NavLink href="/profile/models" active={pathname === '/profile/models'}>
                             <Box size={24} />
                             <span className="hidden md:inline">Models</span>
-                        </Link>
-                        <Link href="/profile/attachments" className="flex items-center justify-center md:justify-start gap-2 p-2 ">
+                        </NavLink>
+                        <NavLink href="/profile/attachments" active={pathname === '/profile/attachments'}>
                             <Paperclip size={24} />
                             <span className="hidden md:inline">Attachments</span>
-                        </Link>
-                        <Link href="/profile/contact" className="flex items-center justify-center md:justify-start gap-2 p-2 ">
+                        </NavLink>
+                        <NavLink href="/profile/contact" active={pathname === '/profile/contact'}>
                             <Mail size={24} />
                             <span className="hidden md:inline">Contact Us</span>
-                        </Link>
+                        </NavLink>
                     </div>
                 </nav>
-                <div className="md:flex-1 md:px-8">
+                <div className="md:flex-1 md:px-8 py-6">
                     {children}
                 </div>
             </div>
+            {/* Mobile navigation - fixed at bottom */}
+            <div className="fixed bottom-0 left-0 right-0 md:hidden bg-neutral-900/80 backdrop-blur-md border-t border-neutral-800/20 z-20">
+                <div className="flex justify-around p-3">
+                    <NavLink href="/profile/account" active={pathname === '/profile/account'} mobileOnly>
+                        <User size={20} />
+                    </NavLink>
+                    <NavLink href="/profile/customisation" active={pathname === '/profile/customisation'} mobileOnly>
+                        <Settings size={20} />
+                    </NavLink>
+                    <NavLink href="/profile/history" active={pathname === '/profile/history'} mobileOnly>
+                        <Clock size={20} />
+                    </NavLink>
+                    <NavLink href="/profile/models" active={pathname === '/profile/models'} mobileOnly>
+                        <Box size={20} />
+                    </NavLink>
+                    <NavLink href="/profile/attachments" active={pathname === '/profile/attachments'} mobileOnly>
+                        <Paperclip size={20} />
+                    </NavLink>
+                    <NavLink href="/profile/contact" active={pathname === '/profile/contact'} mobileOnly>
+                        <Mail size={20} />
+                    </NavLink>
+                </div>
+            </div>
         </div>
+    )
+}
+
+// Helper component for navigation links
+function NavLink({
+    href,
+    active,
+    children,
+    mobileOnly = false
+}: {
+    href: string;
+    active: boolean;
+    children: React.ReactNode;
+    mobileOnly?: boolean;
+}) {
+    return (
+        <Link
+            href={href}
+            className={`
+                flex items-center ${mobileOnly ? 'justify-center' : 'justify-center md:justify-start'} gap-2 p-2 rounded-md transition-colors
+                ${active
+                    ? 'bg-neutral-800 text-white'
+                    : 'text-neutral-400 hover:text-neutral-200 hover:bg-neutral-800/50'}
+            `}
+        >
+            {children}
+        </Link>
     )
 }
