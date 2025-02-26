@@ -34,9 +34,9 @@ export const Trending = ({ append, setSubmitted }: { append: (message: any) => v
     if (isLoading) return (
         <div className="max-w-3xl mx-auto px-4">
             <h2 className="text-lg font-medium text-zinc-50 mb-4">Trending Topics</h2>
-            <div className='grid grid-cols-5 gap-4 min-h-[100px]'>
+            <div className='grid grid-cols-5 gap-4 min-h-[100px] w'>
                 {[...Array(5)].map((_, i) => (
-                    <div key={i} className="animate-pulse rounded-md bg-neutral-800/50 h-24"></div>
+                    <div key={i} className="animate-pulse rounded-md bg-neutral-800/50 h-24 w-28"></div>
                 ))}
             </div>
         </div>
@@ -63,7 +63,7 @@ export const Trending = ({ append, setSubmitted }: { append: (message: any) => v
                         backdrop-blur-sm shadow-sm
                         border border-neutral-800/20
                         p-3 transition-all duration-200
-                        h-24 overflow-hidden"
+                        h-24 overflow-hidden w-28"
                         role="button"
                         tabIndex={0}
                         onKeyDown={(e) => {
