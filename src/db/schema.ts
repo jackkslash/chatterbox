@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
+import { pgTable, text, timestamp, boolean, pgEnum, json } from "drizzle-orm/pg-core";
 
 export const user = pgTable("user", {
 	id: text("id").primaryKey(),
@@ -6,6 +6,26 @@ export const user = pgTable("user", {
 	email: text('email').notNull().unique(),
 	emailVerified: boolean('email_verified').notNull(),
 	image: text('image'),
+	createdAt: timestamp('created_at').notNull(),
+	updatedAt: timestamp('updated_at').notNull()
+});
+
+export const thread = pgTable("thread", {
+	id: text("id").primaryKey(),
+	userId: text('user_id').notNull().references(() => user.id, { onDelete: 'cascade' }),
+	title: text('title'),
+	model: text('model').notNull(),
+	createdAt: timestamp('created_at').notNull(),
+	updatedAt: timestamp('updated_at').notNull(),
+	lastMessageAt: timestamp('last_message_at').notNull()
+});
+
+export const message = pgTable("message", {
+	id: text("id").primaryKey(),
+	threadId: text('thread_id').notNull().references(() => thread.id, { onDelete: 'cascade' }),
+	role: text('role').notNull(),
+	content: text('content').notNull(),
+	toolInvocations: json('tool_invocations'),
 	createdAt: timestamp('created_at').notNull(),
 	updatedAt: timestamp('updated_at').notNull()
 });
