@@ -48,7 +48,7 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({ submitted, setSele
                                         }
                                     }}
                                     className={`px-4 py-2 text-left rounded-md ${selectedModel === id ? 'bg-neutral-800' : 'text-neutral-400'
-                                        } ${(!active || paid) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                        } ${(!active) ? 'opacity-50 cursor-not-allowed' : ''}`}
                                 >
                                     {label}
                                 </button>

@@ -66,11 +66,7 @@ export default function ProfileLayout({
                 </div>
             </div>
             <div className="flex flex-col md:flex-row w-full md:max-w-6xl md:mx-auto">
-                <nav className="md:static md:w-64 z-10 md:space-y-2 p-4 md:min-h-[calc(100vh-80px)] md:border-r border-neutral-800/20">
-                    <div className="hidden md:block mb-6">
-                        <h2 className="text-xl font-semibold">Profile Settings</h2>
-                        <p className="text-sm text-neutral-400">Manage your account and preferences</p>
-                    </div>
+                <nav className="fixed md:static bottom-0 left-0 right-0 md:w-64 z-10 md:space-y-2 p-4 md:min-h-[calc(100vh-80px)] md:border-r border-neutral-800/20 bg-background border-t md:border-t-0">
                     <div className="flex md:flex-col justify-around md:justify-start md:space-y-2">
                         <NavLink href="/profile/account" active={pathname === '/profile/account'}>
                             <User size={24} />
@@ -100,29 +96,6 @@ export default function ProfileLayout({
                 </nav>
                 <div className="md:flex-1 md:px-8 py-6">
                     {children}
-                </div>
-            </div>
-            {/* Mobile navigation - fixed at bottom */}
-            <div className="fixed bottom-0 left-0 right-0 md:hidden bg-neutral-900/80 backdrop-blur-md border-t border-neutral-800/20 z-20">
-                <div className="flex justify-around p-3">
-                    <NavLink href="/profile/account" active={pathname === '/profile/account'} mobileOnly>
-                        <User size={20} />
-                    </NavLink>
-                    <NavLink href="/profile/customisation" active={pathname === '/profile/customisation'} mobileOnly>
-                        <Settings size={20} />
-                    </NavLink>
-                    <NavLink href="/profile/history" active={pathname === '/profile/history'} mobileOnly>
-                        <Clock size={20} />
-                    </NavLink>
-                    <NavLink href="/profile/models" active={pathname === '/profile/models'} mobileOnly>
-                        <Box size={20} />
-                    </NavLink>
-                    <NavLink href="/profile/attachments" active={pathname === '/profile/attachments'} mobileOnly>
-                        <Paperclip size={20} />
-                    </NavLink>
-                    <NavLink href="/profile/contact" active={pathname === '/profile/contact'} mobileOnly>
-                        <Mail size={20} />
-                    </NavLink>
                 </div>
             </div>
         </div>
