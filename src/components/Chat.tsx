@@ -82,17 +82,18 @@ export const Chat = () => {
                                 <div className="text-sm font-medium text-neutral-400">
                                     {m.role === 'user' ? 'User' : selectedModel}
                                 </div>
-                                {m.toolInvocations && (
-                                    <div className="flex flex-col gap-2">
-                                        <ToolInvocations toolInvocations={m.toolInvocations} />
-                                    </div>
-                                )}
-                                {m.content && (
-                                    <div className="text-zinc-50 ">
-                                        <MarkdownRender content={m.content} />
-                                    </div>
-                                )}
-
+                                {m.parts.map((part, i) => {
+                                    switch (part.type) {
+                                        case 'text':
+                                            return <div key={i} className="text-zinc-50 ">
+                                                <MarkdownRender content={part.text} />
+                                            </div>
+                                        case 'tool-invocation':
+                                            return <ToolInvocations key={i} toolInvocations={[part.toolInvocation]} />
+                                        default:
+                                            return null;
+                                    }
+                                })}
                             </div>
 
                         ))}
