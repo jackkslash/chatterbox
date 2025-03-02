@@ -17,8 +17,8 @@ async function getTrending(): Promise<TrendingQuery[]> {
     }
 
     const feed = await response.text();
-    const items = feed.match(/<title>(?!Daily Search Trends)(.*?)<\/title>/g);
-    // const items = feed.match(/<title>(?!Daily Search Trends)(.*?)<\/title>/g)?.slice(0, 2);
+    // const items = feed.match(/<title>(?!Daily Search Trends)(.*?)<\/title>/g);
+    const items = feed.match(/<title>(?!Daily Search Trends)(.*?)<\/title>/g)?.slice(0, 8);
 
     const categories = ['trending', 'community', 'science', 'tech', 'travel', 'politics', 'health', 'sports', 'finance', 'football'] as const;
 

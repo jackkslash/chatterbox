@@ -18,7 +18,7 @@ export const Trending = ({ append, setSubmitted }: { append: (message: any) => v
     });
 
     const updateSliceStart = useCallback(() => {
-        setSliceStart((prev) => (prev + 5 >= (trending?.length || 0) ? 0 : prev + 5));
+        setSliceStart((prev) => (prev + 4 >= (trending?.length || 0) ? 0 : prev + 4));
     }, [trending?.length]);
 
     useEffect(() => {
@@ -53,8 +53,8 @@ export const Trending = ({ append, setSubmitted }: { append: (message: any) => v
     return (
         <div className="max-w-3xl mx-auto px-4">
             <h2 className="text-lg font-medium text-zinc-50 mb-4">Trending Topics</h2>
-            <div className='grid grid-cols-5 gap-4 min-h-[100px]'>
-                {trending.slice(sliceStart, sliceStart + 5).map((t: any) => (
+            <div className='grid grid-cols-2 sm:grid-cols-4 gap-4 min-h-[100px]'>
+                {trending.slice(sliceStart, sliceStart + 4).map((t: any) => (
                     <div
                         key={t.text}
                         onClick={() => handleSubmit(t.text)}
