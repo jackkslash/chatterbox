@@ -1,6 +1,7 @@
-import React, { Dispatch, SetStateAction, useState } from 'react'
-import { Toaster, toast } from 'sonner'
-import { ModelId, modelOptions } from '../lib/models';
+import React, { act, Dispatch, SetStateAction, useEffect, useState } from 'react';
+import { Toaster, toast } from 'sonner';
+import { ModelId } from '../lib/models';
+import { useModelPreferences } from '../hooks/useModelPreferences'; // ✅ Import custom hook
 
 interface ModelSelectorProps {
     submitted?: boolean;
@@ -10,20 +11,27 @@ interface ModelSelectorProps {
 
 export const ModelSelector: React.FC<ModelSelectorProps> = ({ submitted, setSelectedModel, selectedModel }) => {
     const [isOpen, setIsOpen] = useState(false);
+    const activeModels = useModelPreferences(); // ✅ Fetches filtered models
+
+    useEffect(() => {
+        if (setSelectedModel && activeModels.length > 0) {
+            setSelectedModel(activeModels[0].id);
+        }
+    }, [setSelectedModel, activeModels]);
 
     return (
-        <div className='relative'>
-            <Toaster richColors theme='dark' position="top-right" />
+        <div className="relative">
+            <Toaster richColors theme="dark" position="top-right" />
 
             {/* Mobile Button */}
             <button
                 className="md:hidden px-3 py-1 rounded-md bg-neutral-900 text-sm text-neutral-400"
                 onClick={() => setIsOpen(true)}
             >
-                {modelOptions.find(m => m.id === selectedModel)?.label || 'Select Model'}
+                {activeModels.find(m => m.id === selectedModel)?.label || "Select Model"}
             </button>
 
-            {/* Mobile Bottom Sheet */}
+            {/* Mobile Dropdown */}
             {isOpen && (
                 <div
                     className="md:hidden fixed inset-0 bg-black bg-opacity-50 z-50"
@@ -34,25 +42,23 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({ submitted, setSele
                 >
                     <div className="absolute bottom-0 left-0 right-0 bg-neutral-900 rounded-t-xl p-4">
                         <div className="flex flex-col space-y-2">
-                            {modelOptions.map(({ id, label, active, paid }) => (
-
+                            {activeModels.map(({ id, label }) => (
                                 <button
                                     key={id}
                                     onClick={(e) => {
                                         e.preventDefault();
-                                        if (!submitted && setSelectedModel && active) {
+                                        if (!submitted && setSelectedModel) {
                                             setSelectedModel(id);
                                             setIsOpen(false);
                                         } else {
-                                            toast.info('Model is not available.');
+                                            toast.info("Model is not available.");
                                         }
                                     }}
-                                    className={`px-4 py-2 text-left rounded-md ${selectedModel === id ? 'bg-neutral-800' : 'text-neutral-400'
-                                        } ${(!active) ? 'opacity-50 cursor-not-allowed' : ''}`}
+                                    className={`px-4 py-2 text-left rounded-md ${selectedModel === id ? "bg-neutral-800" : "text-neutral-400"
+                                        }`}
                                 >
                                     {label}
                                 </button>
-
                             ))}
                         </div>
                     </div>
@@ -64,53 +70,43 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({ submitted, setSele
                 <button
                     onClick={(e) => {
                         e.preventDefault();
-                        setIsOpen(!isOpen)
-                    }
-                    }
+                        setIsOpen(!isOpen);
+                    }}
                     className="px-3 py-1 rounded-md bg-neutral-900 text-sm text-neutral-400"
                 >
-                    {modelOptions.find(m => m.id === selectedModel)?.label || 'Select Model'}
+                    {activeModels.find(m => m.id === selectedModel)?.label || "Select Model"}
                 </button>
 
                 {isOpen && (
                     <>
-                        <div
-                            className="fixed inset-0 z-40"
-                            onClick={() => setIsOpen(false)}
-                        />
+                        <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
                         <div className="absolute top-full mt-1 z-50 bg-neutral-900 rounded-md shadow-lg left-1/2 transform -translate-x-1/2">
                             <div className="flex flex-col p-1">
-                                {modelOptions
-                                    .sort((a, b) => (b.active ? 1 : 0) - (a.active ? 1 : 0))
-                                    .map(({ id, label, active, paid }) => (
-                                        <button
-                                            key={id}
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                if (active && !paid && !submitted && setSelectedModel) {
-                                                    setSelectedModel(id);
-                                                    setIsOpen(false);
-                                                } else {
-                                                    toast.info(
-                                                        !active ? 'This model is not available.' :
-                                                            paid ? 'This is a paid model.' :
-                                                                'Can not change model while mid-conversation.'
-                                                    );
-                                                }
-                                            }}
-                                            className={`px-2 py-1 text-sm rounded-md whitespace-nowrap ${selectedModel === id
-                                                ? 'bg-neutral-800 shadow-sm'
-                                                : 'text-neutral-400'
-                                                } ${(!active || paid) ? 'opacity-50 cursor-not-allowed' : ''}`}
-                                        >
-                                            {label}
-                                        </button>
-                                    ))}
+                                {activeModels.map(({ id, label }) => (
+                                    <button
+                                        key={id}
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            if (!submitted && setSelectedModel) {
+                                                setSelectedModel(id);
+                                                setIsOpen(false);
+                                            } else {
+                                                toast.info("Model is not available.");
+                                            }
+                                        }}
+                                        className={`px-2 py-1 text-sm rounded-md whitespace-nowrap ${selectedModel === id
+                                            ? "bg-neutral-800 shadow-sm"
+                                            : "text-neutral-400"
+                                            }`}
+                                    >
+                                        {label}
+                                    </button>
+                                ))}
                             </div>
                         </div>
                     </>
                 )}
             </div>
         </div>
-    )
-}
+    );
+};
