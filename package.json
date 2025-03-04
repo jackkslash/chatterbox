@@ -36,6 +36,7 @@
     "react-markdown": "^9.0.3",
     "sonner": "^1.7.4",
     "tailwind-scrollbar": "^3.1.0",
+    "uuid": "^11.1.0",
     "zod": "^3.24.2"
   },
   "devDependencies": {
