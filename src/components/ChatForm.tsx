@@ -39,23 +39,53 @@ export const ChatForm = ({ handleSubmit, handleInputChange, input, handleKeyPres
                         <div className="flex items-center gap-4">
                             {!submitted && setSelectedModel && <ModelSelector submitted={submitted} setSelectedModel={setSelectedModel} selectedModel={selectedModel} />}
                             {setSelectedGroup && <div className="block group w-fit">
-                                <div className="flex items-center gap-1 p-1 rounded-md bg-neutral-900 overflow-hidden transition-all duration-200 w-fit">
-                                    {systemActions.map((action) => (
+                                <div className="relative">
+                                    <div className="sm:flex hidden items-center gap-1 p-1 rounded-md bg-neutral-900 overflow-hidden transition-all duration-200 w-fit">
+                                        {systemActions.map((action) => (
+                                            <button
+                                                type="button"
+                                                key={action.id}
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    setSelectedGroup(action.id);
+                                                }}
+                                                className={`group-hover:w-fit px-2 py-1 text-sm rounded-md whitespace-nowrap transition-all ${selectedGroup === action.id
+                                                    ? 'bg-neutral-800 shadow-sm'
+                                                    : 'text-neutral-400 hidden group-hover:block'
+                                                    }`}
+                                            >
+                                                {action.icon}
+                                            </button>
+                                        ))}
+                                    </div>
+                                    <div className="sm:hidden">
                                         <button
                                             type="button"
-                                            key={action.id}
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                setSelectedGroup(action.id);
-                                            }}
-                                            className={`group-hover:w-fit px-2 py-1 text-sm rounded-md whitespace-nowrap transition-all ${selectedGroup === action.id
-                                                ? 'bg-neutral-800 shadow-sm'
-                                                : 'text-neutral-400 hidden group-hover:block'
-                                                }`}
+                                            className="px-2 py-1.5 rounded-md bg-neutral-900"
+                                            onClick={() => document.getElementById('mobileMenu')?.classList.toggle('hidden')}
                                         >
-                                            {action.icon}
+                                            {systemActions.find(action => action.id === selectedGroup)?.icon || systemActions[0].icon}
                                         </button>
-                                    ))}
+                                        <div id="mobileMenu" className="hidden absolute top-full left-0 mt-1 w-10 bg-neutral-900 rounded-md shadow-lg">
+                                            {systemActions.map((action) => (
+                                                <button
+                                                    type="button"
+                                                    key={action.id}
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        setSelectedGroup(action.id);
+                                                        document.getElementById('mobileMenu')?.classList.add('hidden');
+                                                    }}
+                                                    className={`w-full flex justify-center px-2 py-1 text-sm ${selectedGroup === action.id
+                                                        ? 'bg-neutral-800'
+                                                        : 'text-neutral-400'
+                                                        }`}
+                                                >
+                                                    {action.icon}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>}
                         </div>
