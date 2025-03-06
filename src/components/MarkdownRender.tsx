@@ -32,7 +32,7 @@ export const MarkdownRender: React.FC<MarkdownRendererProps> = ({ content }) => 
                                             {language}
                                         </div>
                                         <button
-                                            className="bg-zinc-800 hover:bg-zinc-900 text-white px-2 py-1 rounded text-sm"
+                                            className="bg-zinc-800 hover:bg-zinc-900 text-white px-2 py-1 rounded-sm text-sm"
                                             onClick={() => (
                                                 navigator.clipboard.writeText(node.text)
                                                     .then(() => toast.success('Copied to clipboard'))
@@ -41,7 +41,7 @@ export const MarkdownRender: React.FC<MarkdownRendererProps> = ({ content }) => 
                                             Copy
                                         </button>
                                     </div>
-                                    <pre key={state.key} className='my-0 bg-zinc-600 rounded-b-md p-4 overflow-x-scroll scrollbar-thin  scrollbar-thumb-neutral-700 scrollbar-track-transparent hover:scrollbar-thumb-neutral-600'>
+                                    <pre key={state.key} className='my-0 bg-zinc-600 rounded-b-md p-4 overflow-x-scroll scrollbar-thin  scrollbar-thumb-neutral-700 scrollbar-track-transparent scrollbar-hover:scrollbar-thumb-neutral-600'>
                                         <code
                                             className={`language-${language}`}
                                             dangerouslySetInnerHTML={{ __html: hljs.highlight(node.text, { language }).value }}
@@ -57,7 +57,7 @@ export const MarkdownRender: React.FC<MarkdownRendererProps> = ({ content }) => 
                                             plaintext
                                         </div>
                                         <button
-                                            className="bg-zinc-800 hover:bg-zinc-900 text-white px-2 py-1 rounded text-sm"
+                                            className="bg-zinc-800 hover:bg-zinc-900 text-white px-2 py-1 rounded-sm text-sm"
                                             onClick={() => (
                                                 navigator.clipboard.writeText(node.text)
                                                     .then(() => toast.success('Copied to clipboard'))
@@ -66,7 +66,7 @@ export const MarkdownRender: React.FC<MarkdownRendererProps> = ({ content }) => 
                                             Copy
                                         </button>
                                     </div>
-                                    <pre key={state.key} className='my-0 bg-zinc-600 rounded-b-md p-4 overflow-x-scroll scrollbar-thin  scrollbar-thumb-neutral-700 scrollbar-track-transparent hover:scrollbar-thumb-neutral-600'>
+                                    <pre key={state.key} className='my-0 bg-zinc-600 rounded-b-md p-4 overflow-x-scroll scrollbar-thin  scrollbar-thumb-neutral-700 scrollbar-track-transparent scrollbar-hover:scrollbar-thumb-neutral-600'>
                                         <code
                                             className="language-plaintext"
                                             dangerouslySetInnerHTML={{ __html: hljs.highlight(node.text, { language: 'plaintext' }).value }}

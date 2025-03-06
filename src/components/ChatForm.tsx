@@ -29,7 +29,7 @@ export const ChatForm = ({ handleSubmit, handleInputChange, input, handleKeyPres
             <div className="max-w-3xl mx-auto sm:mx-0 sm:p-0">
                 <div className="relative border rounded-lg shadow-xl bg-neutral-800 border-neutral-700 p-1">
                     <textarea
-                        className={`w-full p-2 rounded-t bg-neutral-800 text-white border-none focus:outline-none focus:ring-0 resize-none ${!setSelectedGroup ? 'h-10' : ''} scrollbar-thin scrollbar-thumb-neutral-900 scrollbar-track-neutral-800`}
+                        className={`w-full p-2 rounded-t bg-neutral-800 text-white border-none focus:outline-hidden focus:ring-0 resize-none ${!setSelectedGroup ? 'h-10' : ''} scrollbar-thin scrollbar-thumb-neutral-900 scrollbar-track-neutral-800`}
                         value={input}
                         placeholder="Say something..."
                         onChange={handleInputChange}
@@ -50,7 +50,7 @@ export const ChatForm = ({ handleSubmit, handleInputChange, input, handleKeyPres
                                                     setSelectedGroup(action.id);
                                                 }}
                                                 className={`group-hover:w-fit px-2 py-1 text-sm rounded-md whitespace-nowrap transition-all ${selectedGroup === action.id
-                                                    ? 'bg-neutral-800 shadow-sm'
+                                                    ? 'bg-neutral-800 shadow-xs'
                                                     : 'text-neutral-400 hidden group-hover:block'
                                                     }`}
                                             >

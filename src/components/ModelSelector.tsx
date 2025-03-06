@@ -95,7 +95,7 @@ export const ModelSelector: React.FC<ModelSelectorProps> = ({ submitted, setSele
                                             }
                                         }}
                                         className={`px-2 py-1 text-sm rounded-md whitespace-nowrap ${selectedModel === id
-                                            ? "bg-neutral-800 shadow-sm"
+                                            ? "bg-neutral-800 shadow-xs"
                                             : "text-neutral-400"
                                             }`}
                                     >

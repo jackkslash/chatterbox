@@ -60,7 +60,7 @@ export const Trending = ({ append, setSubmitted }: { append: (message: any) => v
                         onClick={() => handleSubmit(t.text)}
                         className="cursor-pointer flex flex-col rounded-md 
                         bg-neutral-800/70 hover:bg-neutral-800/90
-                        backdrop-blur-sm shadow-sm
+                        backdrop-blur-xs shadow-sm
                         border border-neutral-800/20
                         p-3 transition-all duration-200
                         h-24 overflow-hidden w-28"
